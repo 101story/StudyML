@@ -7,7 +7,7 @@ Machine Learnign Study
 * Jump to Python
 
 
-* Machine Learnig for Everyone 
+* Deep Learning Zero To All <br>
 https://hunkim.github.io/ml/
 
 * Data Science School
