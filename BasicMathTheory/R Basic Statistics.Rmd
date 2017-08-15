@@ -1,0 +1,334 @@
+---
+title: "R Basic Statistics"
+output: html_notebook
+---
+
+## 통계
+
+https://www.mathsisfun.com/data/standard-normal-distribution.html
+
+
+### 두개의 skewed 구하기 
+
+Values    1 2 3 4 5 6 7 8<br>
+Frequency 4 6 4 4 3 2 1 1
+
+Values    1 4 6 8 9 10 11 12<br>
+Frequency 1 1 2 3 4 4 5 5
+
+
+```{r}
+a = c(1, 2, 3, 4, 5, 6, 7, 8)
+f = c(4, 6, 4, 4, 3, 2, 1, 1)
+cat("median : ",median(rep(a, f)),'\n',
+    "mean : ",sum(a*f)/sum(f))
+```
+
+
+```{r}
+a = c(1, 4, 6, 8, 9, 10, 11, 12)
+f = c(1, 1, 2, 3, 4, 4, 5, 5)
+cat("median : ",median(rep(a, f)),'\n',
+  "mean : ",sum(a*f)/sum(f))
+```
+
+
+
+### rage, the lower and upper quartiles
+
+Points scored per game 3 6 7 10 11 13 30 <br>
+Frequency 2 1 2 3 1 1 1
+
+```{r}
+points = c( 3, 6, 7, 10, 11, 13, 30)
+f = c(2, 1, 2, 3, 1, 1, 1)
+a = rep(points, f)
+
+cat("range : ", range(points),'\n',
+    "the lower and upper quartiles : ", quantile(a))
+
+```
+
+
+
+### 루트, 제곱
+```{r}
+cat(sqrt(12.67),'\n', 
+    3.56^2)
+```
+
+### 1,2,4,5,6,7 평균 분산 구하기
+
+```{r}
+a = c(1,2,4,5,6,7)
+
+mean = sum(a)/length(a)
+variance = sum((a-mean)^2)/length(a)
+standardDeviation = sqrt(variance)
+
+cat('Mean ',mean,'\n',
+'Variance ',variance, '\n',
+'Standard Deviation ',standardDeviation)
+
+```
+
+
+### z-score 함수 구하기
+표준 편차 상에 어떤 위치에 있는지 보여줌 
+
+95% of students at school are between 1.1m and 1.7m tall<br>
+- mean = (1.1+1.7)/2 = 1.4<br>
+- 1-standard deviation = (1.7-1.1)/4 = 0.15<br>
+인경우 z score 
+```{r}
+zscore <- function(x, pmin, pmax) {
+        mu <- (pmax+pmin)/2
+        sd <- (pmax-pmin)/4
+        z  <- (x-mu)/sd
+        return(z)
+}
+
+cat(zscore(1.85, 1.1, 1.7))
+```
+ -> 3 시그마 위치에 있음 
+
+* 표준편차
+    <br>숫자들의 퍼짐 정도<br>
+    1, 2, 3 표준편차<br>
+    1. 표준편차 : 68%
+    2. 표준편차 : 95%
+    3. 표준편차 : 99%
+
+* 표준 점수(Standard score) z-score
+    : 통계학적으로 정규분포를 만들고 개개의 경우가 표준편차상에 어떤 위치를 차지하는지를 보여주는 차원없는 수치
+    1 : 내가 집단 전체가 평균적으로 떨어진 만큼 떨어져 있다.
+
+
+
+## 가설 
+<p>
+http://math7.tistory.com/82
+
+### 귀무가설, 대립가설
+- 문제) 강아지의 평균수명은 13년 이라고 알려져 있다. 
+실제로 그러한지 알아고비위해, 검정하려고 하는데, 이때 귀무가설과 대림가설을 설정하라. <br>
+-- H0 : u = 13 <br>
+-- H1 : u != 13
+
+
+### 두 모집단인 경우 
+- 문제) 개와 고양이의 평균수명을 조사하였다.
+두 집단의 평균 수명의 차이가 있는지 파악하기위해 검정하려 한다. <br>
+-- H0 : u1 = u2 <br>
+-- H1 : u1 != u2
+
+### 검정통계량
+가설검정에서 사용하는 통계량 <br>
+- z 통계량 (정규분포)
+- t 통계량 (t 분포)
+- x^2 통계량 (x^2 분포)
+- F 통계량 (F분포)
+
+
+### 기각역 
+- 기각역(유의수준) : 귀무가설이 옳아도 귀무가설을 탈락시키는 확률
+- 채택역 (1-기각역) : 귀무가설을 채택할 확률 
+
+* 기각역 설정 방법
+  1. 양측검정 : 같다. 다르다. (알파/2)
+  2. 단측검정(좌측,우측) : 이하, 이상 (알파) 
+
+
+검정 통계량 구하기
+```{r}
+testS <- function(x, mean, mu, n){
+  up = x-mean
+  down = mu/sqrt(n)
+  s = up / down
+  return(s)
+}
+
+round(testS(310,300, 30, 25), digits =2)
+```
+
+
+
+### 중심극한정리
+(central limit theorem, 약자 CLT)
+: 동일한 확률분포를 가진 독립 확률 변수 n개의 평균의 분포는 n이 적당히 크다면 정규분포에 가까워진다
+
+* 모집단의 분포가 어떠하든
+표본평균에 대한 분포는 정규분포를 이룬다.
+
+* 표본평균은 모집단 평균은처에 모이는 경향이 있다. 
+
+* 표본평균들의 표준편차는 모집단의 표준편차를  표본크기의 제곱근 으로 나눈 것이다.
+
+
+표본의 크기 30 
+모집단의 표준편차 1.44 
+```{r}
+1.44/sqrt(30)
+
+```
+표본이 클수록 표본평균들의 표준편차는 작아진다. 
+
+
+
+## 그래프 
+### 히스토그램
+```{r}
+#install.packages("xlsx")
+#library(xlsx)
+
+emp <- read.xlsx("C:/Users/student/Documents/jhfolder/Mulcam/3.Bigdata/170803_rBasic/data/emp.xls", 1)
+emp
+
+hist(emp$SAL, breaks=50)
+```
+
+
+
+```{r}
+
+sal = sqldf('select sal from emp')
+sal$SAL[9] = 5600
+sal
+boxplot(sal, width = 6000, horizontal=TRUE, outline = TRUE)
+
+```
+* 해석) Min -- Lower Quartile[ Median ]Upper Quaritile -- Max
+    * 박스 IQR : Interquartile Range  Q3 - Q1의 값 사분위 범위
+    
+<p>
+* 통계적 추정<br>
+    모집단으로부터 표본을 추출하고
+    추출된 표본의 통계량을 통해 모수를 추정<br>
+    * 점추정 : 하나의 점으로 값을 표현하는 것 (신뢰하기어려움)
+    * 구간추정 : 점추정치를 중심으로 일정 구간을 만듬
+
+
+
+
+### 신뢰구간 구하기 
+* 모 표준편차를 아는 경우 
+xbar(표본평균) n(표본개수) sigma(모 표준편차) 
+```{r}
+
+confidence_interval_90 = function(xbar, n, sigma){
+  low = xbar-(1.65*sigma/sqrt(n))
+  hi = xbar+(1.65*sigma/sqrt(n))
+  return(c(low, hi))
+}
+
+confidence_interval_95 = function(xbar, n, sigma){
+  low = xbar-(1.96*sigma/sqrt(n))
+  hi = xbar+(1.96*sigma/sqrt(n))
+  return(c(low, hi))
+}
+
+confidence_interval_99 = function(xbar, n, sigma){
+  low = xbar-(2.58*sigma/sqrt(n))
+  hi = xbar+(2.58*sigma/sqrt(n))
+  return(c(low, hi))
+}
+
+a = confidence_interval_90(800, 40, 100)
+cat('90 : ', a[1],'< 800 < ',a[2],'\n')
+
+a = confidence_interval_95(800, 40, 100)
+cat('95 : ', a[1],'< 800 < ',a[2],'\n')
+
+a = confidence_interval_99(800, 40, 100)
+cat('99 : ', a[1],'< 800 < ',a[2],'\n')
+
+
+```
+
+
+
+* 모 표준편차를 모르는 경우
+
+  * 100명의 1주일 평균 공부 시간에 대한 95% 신뢰 구간 <br>
+  표본평균, 개수, 표본표준편차 (파라매터)
+```{r}
+confidence_interval_95 = function(xbar, n, sigma){
+  low = xbar-(1.96*sigma/sqrt(n))
+  up = xbar+(1.96*sigma/sqrt(n))
+  return(c(low, up))
+}
+
+sd_interval_95 = function(m, n, d){
+  low = m-(d/sqrt(n))*2
+  up = m+(d/sqrt(n))*2
+  return(c(low,up))
+}
+value = c(21, 20, 15)
+m = mean(value)
+d = sd(value) 
+m
+d
+
+ci = confidence_interval_95(m, 100, d)
+si = sd_interval_95(m, 100, d)
+
+cat('정규분포표를 이용 : ', ci[1],' ~ ',ci[2],'\n')
+cat('표준편차와 평균을 이용 : ',si[1],' ~ ',si[2],'\n')
+
+```
+
+
+  * 30명의 평균 수면 시간의 신뢰구간 95%
+```{r}
+value = c(7.5, 5, 6)
+m = mean(value) 
+d = sd(value) 
+m
+d
+
+ci = confidence_interval_95(m, 30, d)
+si = sd_interval_95(m, 30, d)
+
+cat('정규분포표를 이용 : ', ci[1],' ~ ',ci[2],'\n')
+cat('표준편차와 평균을 이용 : ',si[1],' ~ ',si[2],'\n')
+
+```
+
+
+
+* 가설검증
+    귀무가설 VS 대립가설
+    1. 무작위로 뽑은 표본의 크기, 평균, 편차 추정표집분포를 만들고
+    2. 추정표집분포의 중심점을 귀무가설이 예측한 위치(평균)로 민다.
+    3. p value 확인
+      귀무가설이 맞을때 표본이 나올 수 있는 확률
+      0.05 이상이면 대립가설 지지율이 95% 가 안됨
+      
+      
+* 표본평균 차이로 그룹 비교
+    <br>두 그룹이 차이가 있는데 어느정도 차이가 있는지 알고 싶다.
+
+    1)평균이 59.7 속도를 냄 표준편차 4.6<br>
+    2)평균이 44.2 속도를 냄 표준편차 4.7
+    두 표본 평균의 차이를 중심에 두고<br>
+    표준편차를 다르게 계산해서 (1로둠) 추정표집분포를 만듬
+
+    표본평균들 간의 차를 계속 구해서 정규분포가 만들어짐
+
+    신뢰수준 95%<br>
+    1번 그룹이 2번 그룹보다 빠르다.
+    
+
+* 전체 모집단의 퍼짐정도
+    변동률<br>
+    모집단의 표준편차, 분산<br>
+    * 카이제곱분포(x^2 분포)
+        데이터의 중심위치 파악<br>
+        분산이 퍼져있는 모습을 분포로 만든것
+    * F 분포
+        분산을 추정하고 검정할 때 사용하는 분포<br>
+        두집단의 분산을 비교<br>
+        ANOVA 3개 이상 집단의 분산을 비교하는것
+
+
+
