@@ -1,4 +1,3 @@
-# StudyML
 
 Machine Learnign Study 
 ===================
