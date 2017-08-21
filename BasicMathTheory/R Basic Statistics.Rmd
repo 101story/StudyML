@@ -8,7 +8,7 @@ output: html_notebook
 https://www.mathsisfun.com/data/standard-normal-distribution.html
 
 
-### 두개의 skewed 구하기 
+### 두개의 skewed 구하기
 
 Values    1 2 3 4 5 6 7 8<br>
 Frequency 4 6 4 4 3 2 1 1
@@ -53,7 +53,7 @@ cat("range : ", range(points),'\n',
 
 ### 루트, 제곱
 ```{r}
-cat(sqrt(12.67),'\n', 
+cat(sqrt(12.67),'\n',
     3.56^2)
 ```
 
@@ -74,12 +74,12 @@ cat('Mean ',mean,'\n',
 
 
 ### z-score 함수 구하기
-표준 편차 상에 어떤 위치에 있는지 보여줌 
+표준 편차 상에 어떤 위치에 있는지 보여줌
 
 95% of students at school are between 1.1m and 1.7m tall<br>
 - mean = (1.1+1.7)/2 = 1.4<br>
 - 1-standard deviation = (1.7-1.1)/4 = 0.15<br>
-인경우 z score 
+인경우 z score
 ```{r}
 zscore <- function(x, pmin, pmax) {
         mu <- (pmax+pmin)/2
@@ -90,7 +90,7 @@ zscore <- function(x, pmin, pmax) {
 
 cat(zscore(1.85, 1.1, 1.7))
 ```
- -> 3 시그마 위치에 있음 
+ -> 3 시그마 위치에 있음
 
 * 표준편차
     <br>숫자들의 퍼짐 정도<br>
@@ -105,18 +105,18 @@ cat(zscore(1.85, 1.1, 1.7))
 
 
 
-## 가설 
+## 가설
 <p>
 http://math7.tistory.com/82
 
 ### 귀무가설, 대립가설
-- 문제) 강아지의 평균수명은 13년 이라고 알려져 있다. 
+- 문제) 강아지의 평균수명은 13년 이라고 알려져 있다.
 실제로 그러한지 알아고비위해, 검정하려고 하는데, 이때 귀무가설과 대림가설을 설정하라. <br>
 -- H0 : u = 13 <br>
 -- H1 : u != 13
 
 
-### 두 모집단인 경우 
+### 두 모집단인 경우
 - 문제) 개와 고양이의 평균수명을 조사하였다.
 두 집단의 평균 수명의 차이가 있는지 파악하기위해 검정하려 한다. <br>
 -- H0 : u1 = u2 <br>
@@ -130,16 +130,17 @@ http://math7.tistory.com/82
 - F 통계량 (F분포)
 
 
-### 기각역 
-- 기각역(유의수준) : 귀무가설이 옳아도 귀무가설을 탈락시키는 확률
-- 채택역 (1-기각역) : 귀무가설을 채택할 확률 
+### 기각역
+- 기각역(유의수준) : 귀무가설이 옳아도 귀무가설을 탈락시키는 확률<br>
+- 채택역 (1-기각역) : 귀무가설을 채택할 확률 <br>
 
 * 기각역 설정 방법
-  1. 양측검정 : 같다. 다르다. (알파/2)
-  2. 단측검정(좌측,우측) : 이하, 이상 (알파) 
+  1. 양측검정 : 같다. 다르다. (알파/2)<br>
+  2. 단측검정(좌측,우측) : 이하, 이상 (알파) <br>
 
 
 검정 통계량 구하기
+
 ```{r}
 testS <- function(x, mean, mu, n){
   up = x-mean
@@ -160,27 +161,26 @@ round(testS(310,300, 30, 25), digits =2)
 * 모집단의 분포가 어떠하든
 표본평균에 대한 분포는 정규분포를 이룬다.
 
-* 표본평균은 모집단 평균은처에 모이는 경향이 있다. 
+* 표본평균은 모집단 평균은처에 모이는 경향이 있다.
 
 * 표본평균들의 표준편차는 모집단의 표준편차를  표본크기의 제곱근 으로 나눈 것이다.
 
 
-표본의 크기 30 
-모집단의 표준편차 1.44 
+표본의 크기 30
+모집단의 표준편차 1.44
 ```{r}
 1.44/sqrt(30)
 
 ```
-표본이 클수록 표본평균들의 표준편차는 작아진다. 
+표본이 클수록 표본평균들의 표준편차는 작아진다.
 
 
 
-## 그래프 
+## 그래프
 ### 히스토그램
 ```{r}
 #install.packages("xlsx")
-#library(xlsx)
-
+library(xlsx)
 emp <- read.xlsx("C:/Users/student/Documents/jhfolder/Mulcam/3.Bigdata/170803_rBasic/data/emp.xls", 1)
 emp
 
@@ -190,7 +190,7 @@ hist(emp$SAL, breaks=50)
 
 
 ```{r}
-
+library(sqldf)
 sal = sqldf('select sal from emp')
 sal$SAL[9] = 5600
 sal
@@ -199,7 +199,7 @@ boxplot(sal, width = 6000, horizontal=TRUE, outline = TRUE)
 ```
 * 해석) Min -- Lower Quartile[ Median ]Upper Quaritile -- Max
     * 박스 IQR : Interquartile Range  Q3 - Q1의 값 사분위 범위
-    
+
 <p>
 * 통계적 추정<br>
     모집단으로부터 표본을 추출하고
@@ -210,9 +210,9 @@ boxplot(sal, width = 6000, horizontal=TRUE, outline = TRUE)
 
 
 
-### 신뢰구간 구하기 
-* 모 표준편차를 아는 경우 
-xbar(표본평균) n(표본개수) sigma(모 표준편차) 
+### 신뢰구간 구하기
+* 모 표준편차를 아는 경우
+xbar(표본평균) n(표본개수) sigma(모 표준편차)
 ```{r}
 
 confidence_interval_90 = function(xbar, n, sigma){
@@ -265,7 +265,7 @@ sd_interval_95 = function(m, n, d){
 }
 value = c(21, 20, 15)
 m = mean(value)
-d = sd(value) 
+d = sd(value)
 m
 d
 
@@ -281,8 +281,8 @@ cat('표준편차와 평균을 이용 : ',si[1],' ~ ',si[2],'\n')
   * 30명의 평균 수면 시간의 신뢰구간 95%
 ```{r}
 value = c(7.5, 5, 6)
-m = mean(value) 
-d = sd(value) 
+m = mean(value)
+d = sd(value)
 m
 d
 
@@ -303,8 +303,8 @@ cat('표준편차와 평균을 이용 : ',si[1],' ~ ',si[2],'\n')
     3. p value 확인
       귀무가설이 맞을때 표본이 나올 수 있는 확률
       0.05 이상이면 대립가설 지지율이 95% 가 안됨
-      
-      
+
+
 * 표본평균 차이로 그룹 비교
     <br>두 그룹이 차이가 있는데 어느정도 차이가 있는지 알고 싶다.
 
@@ -317,7 +317,7 @@ cat('표준편차와 평균을 이용 : ',si[1],' ~ ',si[2],'\n')
 
     신뢰수준 95%<br>
     1번 그룹이 2번 그룹보다 빠르다.
-    
+
 
 * 전체 모집단의 퍼짐정도
     변동률<br>
@@ -329,6 +329,153 @@ cat('표준편차와 평균을 이용 : ',si[1],' ~ ',si[2],'\n')
         분산을 추정하고 검정할 때 사용하는 분포<br>
         두집단의 분산을 비교<br>
         ANOVA 3개 이상 집단의 분산을 비교하는것
+
+
+
+#### 접두어
+- d for "density"     : the density function (p.f. or p.d.f.)
+- p for "probability" : the cumulative distribution function (c.d.f.)
+- q for "quantile"    : the inverse c.d.f.
+- r for "random"      : a random variable having the specified distribution
+
+
+#### 베르누이분포
+```{r}
+  b = p**x * (1-p)**(1-x) # 베르누이 수식
+
+  # 두개의 주사위로 눈금의 합이 6이 나올 확류(성공확률 1, 실패확률 0)
+  p = 1/6
+  x = 1 # 합이 6이 나올 확률 (성공확률)
+  b = p**x * (1-p)**(1-x)
+  r = b * b * 5 # 1,5/2,4/3,3/4,2/5,1 이 나오는 경우의 수
+  r
+```
+
+#### 이항 분포
+
+  # 한 축구 선수가 페널티킥을 차면 5번 중 4번을 성공한다고 한다.
+  # 이 선수가 10번의 패널티킥을 차서 7번 성공할 확률을 구하시오.
+```{r}
+  dbinom(7,         # 성공의 수
+         size=10,   # 시행의 수
+         p=4/5)     # 성공할 확률
+
+  choose(10, 7) *   # 이항계수 nCr 조합
+    (4/5)^7 *         # 성공할 확률 p**x
+    (1/5)^(10-7)      # 실패할 확률 (1-p)**(1-x)
+```
+```{r}
+install.packages("pbinom")
+library(pbinom)
+  # 치료율 2%, 감염된 환자 20명을 치료했을 때, 적어도 2명 이상은 회복될 확률
+  1 - pbinom(1, size=20, p=.2)
+  pbimon(1, size=20, p=0.2, lower.tail=FALSE) 
+  # false 1 부터 20까지 true 0 부터 1까지
+    # 또는
+  x <- c(2,...,20)
+  dbinom(x, size=20, p=.2)
+  sum(dbinom(x, size=20, p=.2))
+```
+
+
+#### 초기하분포
+
+* 총 상품 10개 불량 6개
+  이 중 비복원추출로 7개 뽑았을 때, 불량이 4개이상 나올 확률
+
+```{r}
+
+  x <- c(0, 1, 2, 3, 4)
+  r <- dhyper(x, 6, 10, 7); r
+  sum(r)
+  
+  # 또는 
+  
+  dhyper(4,      # number of red balls drawn without replacement
+         6,      # number of red balls  (10개에서 6개 불량)
+         4,      # number of blue balls (10개에서 4개 정상)
+         7)      # number of balls drawn
+```
+
+
+
+
+
+#### 기하분포
+  시험 합격률이 0.25라고 한다.
+  적어도 3번째 이내에 시험에서 합격할 확률
+
+   
+```{r}
+    prob <- 0.25
+    dgeom(0, prob) +   # 첫번째 합격할 확률
+    dgeom(1, prob) +   # 두번째 합격할 확률
+    dgeom(2, prob)     # 세번째 합격할 확률
+
+    # 또는 
+
+    prob <- 0.25
+    x <- 3
+    pgeom(x - 1,prob)
+```
+
+
+#### 음이항분포
+
+  홈런을 칠 확률은 0.25 7번째 타석에서 3번째 안타를 칠 확률
+
+```{r}
+
+  dnbinom(4,      # 실패횟수 : 7 - 3
+          3,      # 성공횟수
+          0.25)   # probability of success in each trial
+```
+
+  음이항분포의 k=1일 때, 기하분포와 같아지는지를 확인하라.
+
+```{r}
+  prob <- 0.4
+  dgeom(0, prob)
+  dnbinom(0, 1, prob)
+```
+
+
+#### 포아송분포
+
+  책에 오타가 평균 5페이지에서 10개씩 발생 
+  오타가 3개 나올 확률 
+```{r}
+dpois(3, 10/5)
+```
+  
+  응급실 환자가 하루 4명 하루에 2명 이하의 환자가 응급실로 올 확률 
+```{r}
+ppois(2, 4, lower.tail=TRUE )
+```
+
+
+
+#### 정규분포 
+
+  성인 남자 평균키 173 표준편차 5 인 정규분포 
+  185 이상인 사람의 비율을 구하기 위해 표준화 185의 z 값 
+
+```{r}
+  # TRUE : p[X<=x] FALSE : p[X > x]
+  pnorm(185, mean=173, sd=5, lower.tail = FALSE) 
+    # 또는 
+  zscore <- (185-173)/5
+  zscore
+  pnorm(zscore, mean=0, sd=1, lower.tail = FALSE)
+
+```
+
+
+
+
+
+
+
 
 
 
