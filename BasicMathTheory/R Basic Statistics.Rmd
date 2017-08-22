@@ -331,15 +331,15 @@ cat('표준편차와 평균을 이용 : ',si[1],' ~ ',si[2],'\n')
         ANOVA 3개 이상 집단의 분산을 비교하는것
 
 
-
-#### 접두어
+# 분포 
+## 접두어
 - d for "density"     : the density function (p.f. or p.d.f.)
 - p for "probability" : the cumulative distribution function (c.d.f.)
 - q for "quantile"    : the inverse c.d.f.
 - r for "random"      : a random variable having the specified distribution
 
 
-#### 베르누이분포
+### 베르누이분포
 ```{r}
   b = p**x * (1-p)**(1-x) # 베르누이 수식
 
@@ -351,10 +351,10 @@ cat('표준편차와 평균을 이용 : ',si[1],' ~ ',si[2],'\n')
   r
 ```
 
-#### 이항 분포
+### 이항 분포
 
-  # 한 축구 선수가 페널티킥을 차면 5번 중 4번을 성공한다고 한다.
-  # 이 선수가 10번의 패널티킥을 차서 7번 성공할 확률을 구하시오.
+  * 한 축구 선수가 페널티킥을 차면 5번 중 4번을 성공한다고 한다.
+  이 선수가 10번의 패널티킥을 차서 7번 성공할 확률을 구하시오.
 ```{r}
   dbinom(7,         # 성공의 수
          size=10,   # 시행의 수
@@ -378,9 +378,9 @@ library(pbinom)
 ```
 
 
-#### 초기하분포
+### 초기하분포
 
-* 총 상품 10개 불량 6개
+  * 총 상품 10개 불량 6개
   이 중 비복원추출로 7개 뽑았을 때, 불량이 4개이상 나올 확률
 
 ```{r}
@@ -400,11 +400,10 @@ library(pbinom)
 
 
 
-#### 기하분포
-  시험 합격률이 0.25라고 한다.
-  적어도 3번째 이내에 시험에서 합격할 확률
+### 기하분포
 
-   
+  * 시험 합격률이 0.25라고 한다.
+  적어도 3번째 이내에 시험에서 합격할 확률
 ```{r}
     prob <- 0.25
     dgeom(0, prob) +   # 첫번째 합격할 확률
@@ -419,9 +418,9 @@ library(pbinom)
 ```
 
 
-#### 음이항분포
+### 음이항분포
 
-  홈런을 칠 확률은 0.25 7번째 타석에서 3번째 안타를 칠 확률
+  * 홈런을 칠 확률은 0.25 7번째 타석에서 3번째 안타를 칠 확률
 
 ```{r}
 
@@ -430,7 +429,7 @@ library(pbinom)
           0.25)   # probability of success in each trial
 ```
 
-  음이항분포의 k=1일 때, 기하분포와 같아지는지를 확인하라.
+  * 음이항분포의 k=1일 때, 기하분포와 같아지는지를 확인하라.
 
 ```{r}
   prob <- 0.4
@@ -439,9 +438,9 @@ library(pbinom)
 ```
 
 
-#### 포아송분포
+### 포아송분포
 
-  책에 오타가 평균 5페이지에서 10개씩 발생 
+  * 책에 오타가 평균 5페이지에서 10개씩 발생 
   오타가 3개 나올 확률 
 ```{r}
 dpois(3, 10/5)
@@ -454,7 +453,7 @@ ppois(2, 4, lower.tail=TRUE )
 
 
 
-#### 정규분포 
+### 정규분포 
 
   성인 남자 평균키 173 표준편차 5 인 정규분포 
   185 이상인 사람의 비율을 구하기 위해 표준화 185의 z 값 
@@ -470,11 +469,217 @@ ppois(2, 4, lower.tail=TRUE )
 ```
 
 
+### 지수분포
+
+  선풍기 평균수명이 5년일때 이부품이 고잔아지 않고 6년이상 수명이 지속될 확률
+```{r}
+  ramda <- 1/5
+  1-pexp(6, rate=ramda)
+
+```
 
 
 
 
+### t분포 
 
+  자유가 7일때 면적의 90% 가 두개의 t 값사이에 존재 양쪽의 t 값
+```{r}
+    qt(.95,                   # 확률 : 1 - (0.1/2)
+       df=7,
+       lower.tail = TRUE)     # 오른쪽 t값
+
+    qt(.95,                   # 확률 : 1 - (0.1/2)
+       df=7,
+       lower.tail = FALSE)    # 왼쪽 t값
+
+```
+
+
+### 카이제곱 분포
+  
+  * 자유도가 7이고 α=0.1일 때, 양쪽 두 개의 χ2값
+```{r}
+  qchisq(.95,                 # 확률 : 1 - 0.05
+       df=7,                # 자유도
+       lower.tail=TRUE)     # defalut. 오른쪽 카이제곱값 리턴
+
+  qchisq(.95,                 # 확률
+       df=7,                # 자유도
+       lower.tail = FALSE)  # 왼쪽 카이제곱값 리턴
+```
+
+
+### F 분포
+
+  * 집단 A의 표본분산이 20이고 n=9
+  집단 B의 표본분산이 30이고 n=6
+  α=0.1에 해당하는 (오른쪽) F값
+```{r}
+  qf(.9,                # 확률 : 1 - 유의수준
+     df1=5,             # 분산이 더 큰 집단의 자유도
+     df2=8,             # 분산이 더 작은 집단의 자유도
+     lower.tail=TRUE)   # defalut. 오른쪽 F값 리턴
+```
+
+
+# 신뢰구간
+
+  
+  * 제품 평균수명이 표본 100개를 뽑아본 결과 평균이 800일, 모표준편차(σ)는 40일
+  90%, 95%, 99% 신뢰구간 (정규분포)
+```{r}
+
+  m     <- 800  # sample mean
+  sigma <- 40   # population standard deviation
+  n     <- 100  # sample size
+  #90%
+  error <- qnorm(0.95)*sigma/sqrt(n); error 
+  #95%
+  error <- qnorm(0.975)*sigma/sqrt(n); error
+  #99%
+  error <- qnorm(0.995)*sigma/sqrt(n); error
+  
+  left <- m - error; left
+  right <- m + error; right
+```
+
+
+  * 제품의 모평균을 추리
+  표본 9개를 추출 20, 20, 25, 21, 21, 23, 19, 18, 22
+  제품의 평균에 대한 95% 신뢰구간 (t분포)
+```{r}  
+  x <- c(20, 20, 25, 21, 21, 23, 19, 18, 22)
+  n <- length(x)
+  m <- mean(x)
+  s <- sd(x)
+  
+  # 0.975 t 분포값 df=n-1 자유도
+  error <- qt(0.975, df=n-1)*s/sqrt(n)
+    
+  left <- m - error; left
+  right <- m + error; right
+```
+  
+  
+  * 두 모평균의 신뢰구간
+  두회사 제품의 평균수명 차이
+  각 회사에서 16개, 15개의 표본을 뽑아 실험
+  표본평균 각각 140일, 120일, 표본분산 10, 15
+  평균수명 차이에 대한 95% 신뢰구간
+```{r}
+  n.a <- 16
+  n.b <- 15
+
+  mean.a <- 140
+  mean.b <- 120
+
+  sample.var.a <- 10
+  sample.var.b <- 15
+  
+  
+  error <- abs(qt(0.025, df=(n.a + n.b)-2)); 
+  error
+  
+  pooled_variance <- sqrt(((n.a - 1)*sample.var.a + (n.b - 1)*sample.var.b)/(n.a + n.b-2));
+  pooled_variance
+
+  left <- mean.a - mean.b - error*pooled_variance*sqrt(1/n.a + 1/n.b); left
+  right <- mean.a - mean.b + error*pooled_variance*sqrt(1/n.a + 1/n.b); right
+
+```
+
+
+  * 실험1과 실험2의
+    분산이 얼마나 차이 나는지를 비교
+    각각 표본 5개와 4개를 뽑아 분산을 분산이 각각 14와 12
+
+    이때 두 모분산의 비율 90% 신뢰구간
+```{r}
+  n.a <- 5
+  n.b <- 4
+
+  sample.variance.a <- 14
+  sample.variance.b <- 12
+
+  confidence.level <- 0.9    # 신뢰수준
+  significance.level <- (1 - confidence.level)/2; significance.level  # 유의수준
+
+  left.F.value <-
+  qf(significance.level,   # 확률
+       df1=n.a - 1,          # 분산이 더 큰 집단 의 자유도
+       df2=n.b - 1,          # 분산이 더 작은 집단 의 자유도
+       lower.tail=FALSE)     # 왼쪽 F값 리턴
+
+  left.F.value
+
+  right.F.value <-
+    qf(significance.level,   # 확률
+       df1=n.b - 1,          # 분산이 더 큰 집단 의 자유도
+       df2=n.a - 1,          # 분산이 더 작은 집단 의 자유도
+       lower.tail=FALSE)     # 오른쪽 F값 리턴
+
+  right.F.value
+
+  sample.variance.a/sample.variance.b * 1/left.F.value
+  sample.variance.a/sample.variance.b * right.F.value
+
+```
+
+
+# 가설검정
+
+## 가설검정
+
+### 모평균의 가설검정
+
+  
+  * 제품 평균 수명은 300일이 맞는지 검정
+  제품 25개를 표본 조사 후 평균수명은 310일 유의수준 5%에서 검정
+  단 건전지의 모표준편차는 30으로 알려져 있다.
+
+    가설 수립 -> 양측 검정, 유의수준 0.05
+
+  풀이 <br>
+    1) 가설수립, 유의수준 0.05
+        귀무가설 : 300 이다.
+        대립가설 : 300 이 아니다.
+        --> 수립된 가설의 모양에 따라 "양측검정"
+
+    2) 수립된 가설이 모평균에 관한 것이므로 z 통계량을 이용
+
+    3) 기각역 설정
+```{r}
+        round(qnorm(0.975), digits=2)
+```     
+   
+        --> 양측검정 이면서 유의수준 0.05
+
+    4) 검정통계량 계산 --> z 통계량 구하기
+        샘플을 통해 나온 값으로 계산
+```{r}
+        Xbar  <- 310
+        mu    <- 300
+        sigma <- 30
+        n     <- 25
+
+        zscore <- round((Xbar - mu) / (sigma/sqrt(n)), digits=2); zscore
+```
+        결론) 귀무가설이 맞다.
+
+    5) 매번 달라질수 있기 때문에
+        pvalue 로 변경해보면
+
+        zscore 로 구한 확률
+```{r}
+        prob <- pnorm(zscore, mean=0, sd=1); prob
+```
+        pvalue 확인
+```{r}      
+        pvalue <- (1 - prob) * 2; pvalue
+```
+
+  
 
 
 
