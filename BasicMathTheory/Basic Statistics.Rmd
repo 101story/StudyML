@@ -1,0 +1,875 @@
+---
+title: "R Basic Statistics"
+output: html_notebook
+---
+
+## 통계
+
+https://www.mathsisfun.com/data/standard-normal-distribution.html
+
+
+### 두개의 skewed 구하기
+
+Values    1 2 3 4 5 6 7 8<br>
+Frequency 4 6 4 4 3 2 1 1
+
+Values    1 4 6 8 9 10 11 12<br>
+Frequency 1 1 2 3 4 4 5 5
+
+
+```{r}
+a = c(1, 2, 3, 4, 5, 6, 7, 8)
+f = c(4, 6, 4, 4, 3, 2, 1, 1)
+cat("median : ",median(rep(a, f)),'\n',
+    "mean : ",sum(a*f)/sum(f))
+```
+
+
+```{r}
+a = c(1, 4, 6, 8, 9, 10, 11, 12)
+f = c(1, 1, 2, 3, 4, 4, 5, 5)
+cat("median : ",median(rep(a, f)),'\n',
+  "mean : ",sum(a*f)/sum(f))
+```
+
+
+
+### rage, the lower and upper quartiles
+
+Points scored per game 3 6 7 10 11 13 30 <br>
+Frequency 2 1 2 3 1 1 1
+
+```{r}
+points = c( 3, 6, 7, 10, 11, 13, 30)
+f = c(2, 1, 2, 3, 1, 1, 1)
+a = rep(points, f)
+
+cat("range : ", range(points),'\n',
+    "the lower and upper quartiles : ", quantile(a))
+
+```
+
+
+
+### 루트, 제곱
+```{r}
+cat(sqrt(12.67),'\n',
+    3.56^2)
+```
+
+### 1,2,4,5,6,7 평균 분산 구하기
+
+```{r}
+a = c(1,2,4,5,6,7)
+
+mean = sum(a)/length(a)
+variance = sum((a-mean)^2)/length(a)
+standardDeviation = sqrt(variance)
+
+cat('Mean ',mean,'\n',
+'Variance ',variance, '\n',
+'Standard Deviation ',standardDeviation)
+
+```
+
+
+### z-score 함수 구하기
+표준 편차 상에 어떤 위치에 있는지 보여줌
+
+95% of students at school are between 1.1m and 1.7m tall<br>
+- mean = (1.1+1.7)/2 = 1.4<br>
+- 1-standard deviation = (1.7-1.1)/4 = 0.15<br>
+인경우 z score
+```{r}
+zscore <- function(x, pmin, pmax) {
+        mu <- (pmax+pmin)/2
+        sd <- (pmax-pmin)/4
+        z  <- (x-mu)/sd
+        return(z)
+}
+
+cat(zscore(1.85, 1.1, 1.7))
+```
+ -> 3 시그마 위치에 있음
+
+* 표준편차
+    <br>숫자들의 퍼짐 정도<br>
+    1, 2, 3 표준편차<br>
+    1. 표준편차 : 68%
+    2. 표준편차 : 95%
+    3. 표준편차 : 99%
+
+* 표준 점수(Standard score) z-score
+    : 통계학적으로 정규분포를 만들고 개개의 경우가 표준편차상에 어떤 위치를 차지하는지를 보여주는 차원없는 수치
+    1 : 내가 집단 전체가 평균적으로 떨어진 만큼 떨어져 있다.
+
+
+
+## 가설
+<p>
+http://math7.tistory.com/82
+
+### 귀무가설, 대립가설
+- 문제) 강아지의 평균수명은 13년 이라고 알려져 있다.<br>
+실제로 그러한지 알아고비위해, 검정하려고 하는데, 이때 귀무가설과 대림가설을 설정하라. <br>
+-- H0 : u = 13 <br>
+-- H1 : u != 13
+
+
+### 두 모집단인 경우
+- 문제) 개와 고양이의 평균수명을 조사하였다.<br>
+두 집단의 평균 수명의 차이가 있는지 파악하기위해 검정하려 한다. <br>
+-- H0 : u1 = u2 <br>
+-- H1 : u1 != u2
+
+### 검정통계량
+가설검정에서 사용하는 통계량 <br>
+- z 통계량 (정규분포)
+- t 통계량 (t 분포)
+- x^2 통계량 (x^2 분포)
+- F 통계량 (F분포)
+
+
+### 기각역
+- 기각역(유의수준) : 귀무가설이 옳아도 귀무가설을 탈락시키는 확률<br>
+- 채택역 (1-기각역) : 귀무가설을 채택할 확률 <br>
+
+* 기각역 설정 방법
+  1. 양측검정 : 같다. 다르다. (알파/2)<br>
+  2. 단측검정(좌측,우측) : 이하, 이상 (알파) <br>
+
+
+검정 통계량 구하기
+
+```{r}
+testS <- function(x, mean, mu, n){
+  up = x-mean
+  down = mu/sqrt(n)
+  s = up / down
+  return(s)
+}
+
+round(testS(310,300, 30, 25), digits =2)
+```
+
+
+
+### 중심극한정리
+(central limit theorem, 약자 CLT)<br>
+: 동일한 확률분포를 가진 독립 확률 변수 n개의 평균의 분포는 n이 적당히 크다면 정규분포에 가까워진다
+
+* 모집단의 분포가 어떠하든<br>
+표본평균에 대한 분포는 정규분포를 이룬다.
+
+* 표본평균은 모집단 평균은처에 모이는 경향이 있다.
+
+* 표본평균들의 표준편차는 모집단의 표준편차를  표본크기의 제곱근 으로 나눈 것이다.
+
+
+표본의 크기 30<br>
+모집단의 표준편차 1.44
+```{r}
+1.44/sqrt(30)
+
+```
+표본이 클수록 표본평균들의 표준편차는 작아진다.
+
+
+
+## 그래프
+### 히스토그램
+```{r}
+#install.packages("xlsx")
+library(xlsx)
+emp <- read.xlsx("C:/Users/student/Documents/jhfolder/Mulcam/3.Bigdata/170803_rBasic/data/emp.xls", 1)
+emp
+
+hist(emp$SAL, breaks=50)
+```
+
+
+
+```{r}
+library(sqldf)
+sal = sqldf('select sal from emp')
+sal$SAL[9] = 5600
+sal
+boxplot(sal, width = 6000, horizontal=TRUE, outline = TRUE)
+
+```
+* 해석) Min -- Lower Quartile[ Median ]Upper Quaritile -- Max
+    * 박스 IQR : Interquartile Range  Q3 - Q1의 값 사분위 범위
+
+<p>
+* 통계적 추정<br>
+    모집단으로부터 표본을 추출하고<br>
+    추출된 표본의 통계량을 통해 모수를 추정<br>
+    * 점추정 : 하나의 점으로 값을 표현하는 것 (신뢰하기어려움)
+    * 구간추정 : 점추정치를 중심으로 일정 구간을 만듬
+
+
+
+
+### 신뢰구간 구하기
+* 모 표준편차를 아는 경우<br>
+xbar(표본평균) n(표본개수) sigma(모 표준편차)
+```{r}
+
+confidence_interval_90 = function(xbar, n, sigma){
+  low = xbar-(1.65*sigma/sqrt(n))
+  hi = xbar+(1.65*sigma/sqrt(n))
+  return(c(low, hi))
+}
+
+confidence_interval_95 = function(xbar, n, sigma){
+  low = xbar-(1.96*sigma/sqrt(n))
+  hi = xbar+(1.96*sigma/sqrt(n))
+  return(c(low, hi))
+}
+
+confidence_interval_99 = function(xbar, n, sigma){
+  low = xbar-(2.58*sigma/sqrt(n))
+  hi = xbar+(2.58*sigma/sqrt(n))
+  return(c(low, hi))
+}
+
+a = confidence_interval_90(800, 40, 100)
+cat('90 : ', a[1],'< 800 < ',a[2],'\n')
+
+a = confidence_interval_95(800, 40, 100)
+cat('95 : ', a[1],'< 800 < ',a[2],'\n')
+
+a = confidence_interval_99(800, 40, 100)
+cat('99 : ', a[1],'< 800 < ',a[2],'\n')
+
+
+```
+
+
+
+* 모 표준편차를 모르는 경우
+
+  * 100명의 1주일 평균 공부 시간에 대한 95% 신뢰 구간 <br>
+  표본평균, 개수, 표본표준편차 (파라매터)
+```{r}
+confidence_interval_95 = function(xbar, n, sigma){
+  low = xbar-(1.96*sigma/sqrt(n))
+  up = xbar+(1.96*sigma/sqrt(n))
+  return(c(low, up))
+}
+
+sd_interval_95 = function(m, n, d){
+  low = m-(d/sqrt(n))*2
+  up = m+(d/sqrt(n))*2
+  return(c(low,up))
+}
+value = c(21, 20, 15)
+m = mean(value)
+d = sd(value)
+m
+d
+
+ci = confidence_interval_95(m, 100, d)
+si = sd_interval_95(m, 100, d)
+
+cat('정규분포표를 이용 : ', ci[1],' ~ ',ci[2],'\n')
+cat('표준편차와 평균을 이용 : ',si[1],' ~ ',si[2],'\n')
+
+```
+
+
+  * 30명의 평균 수면 시간의 신뢰구간 95%
+```{r}
+value = c(7.5, 5, 6)
+m = mean(value)
+d = sd(value)
+m
+d
+
+ci = confidence_interval_95(m, 30, d)
+si = sd_interval_95(m, 30, d)
+
+cat('정규분포표를 이용 : ', ci[1],' ~ ',ci[2],'\n')
+cat('표준편차와 평균을 이용 : ',si[1],' ~ ',si[2],'\n')
+
+```
+
+
+
+* 가설검증<br>
+    귀무가설 VS 대립가설<br>
+    1. 무작위로 뽑은 표본의 크기, 평균, 편차 추정표집분포를 만들고<br>
+    2. 추정표집분포의 중심점을 귀무가설이 예측한 위치(평균)로 민다.<br>
+    3. p value 확인<br>
+      귀무가설이 맞을때 표본이 나올 수 있는 확률<br>
+      0.05 이상이면 대립가설 지지율이 95% 가 안됨<br>
+
+
+* 표본평균 차이로 그룹 비교
+    <br>두 그룹이 차이가 있는데 어느정도 차이가 있는지 알고 싶다.
+
+    1)평균이 59.7 속도를 냄 표준편차 4.6<br>
+    2)평균이 44.2 속도를 냄 표준편차 4.7
+    두 표본 평균의 차이를 중심에 두고<br>
+    표준편차를 다르게 계산해서 (1로둠) 추정표집분포를 만듬
+
+    표본평균들 간의 차를 계속 구해서 정규분포가 만들어짐
+
+    신뢰수준 95%<br>
+    1번 그룹이 2번 그룹보다 빠르다.
+
+
+* 전체 모집단의 퍼짐정도
+    변동률<br>
+    모집단의 표준편차, 분산<br>
+    * 카이제곱분포(x^2 분포)
+        데이터의 중심위치 파악<br>
+        분산이 퍼져있는 모습을 분포로 만든것
+    * F 분포
+        분산을 추정하고 검정할 때 사용하는 분포<br>
+        두집단의 분산을 비교<br>
+        ANOVA 3개 이상 집단의 분산을 비교하는것
+
+
+# 분포 
+## 접두어
+- d for "density"     : the density function (p.f. or p.d.f.) <br>
+- p for "probability" : the cumulative distribution function (c.d.f.)<br>
+- q for "quantile"    : the inverse c.d.f.<br>
+- r for "random"      : a random variable having the specified distribution<br>
+
+
+### 베르누이분포
+```{r}
+  b = p**x * (1-p)**(1-x) # 베르누이 수식
+
+  # 두개의 주사위로 눈금의 합이 6이 나올 확류(성공확률 1, 실패확률 0)
+  p = 1/6
+  x = 1 # 합이 6이 나올 확률 (성공확률)
+  b = p**x * (1-p)**(1-x)
+  r = b * b * 5 # 1,5/2,4/3,3/4,2/5,1 이 나오는 경우의 수
+  r
+```
+
+### 이항 분포
+
+  * 한 축구 선수가 페널티킥을 차면 5번 중 4번을 성공한다고 한다. <br>
+  이 선수가 10번의 패널티킥을 차서 7번 성공할 확률을 구하시오.
+```{r}
+  dbinom(7,         # 성공의 수
+         size=10,   # 시행의 수
+         p=4/5)     # 성공할 확률
+
+  choose(10, 7) *   # 이항계수 nCr 조합
+    (4/5)^7 *         # 성공할 확률 p**x
+    (1/5)^(10-7)      # 실패할 확률 (1-p)**(1-x)
+```
+```{r}
+install.packages("pbinom")
+library(pbinom)
+  # 치료율 2%, 감염된 환자 20명을 치료했을 때, 적어도 2명 이상은 회복될 확률
+  1 - pbinom(1, size=20, p=.2)
+  pbimon(1, size=20, p=0.2, lower.tail=FALSE) 
+  # false 1 부터 20까지 true 0 부터 1까지
+    # 또는
+  x <- c(2,...,20)
+  dbinom(x, size=20, p=.2)
+  sum(dbinom(x, size=20, p=.2))
+```
+
+
+### 초기하분포
+
+  * 총 상품 10개 불량 6개 <br>
+  이 중 비복원추출로 7개 뽑았을 때, 불량이 4개이상 나올 확률
+
+```{r}
+
+  x <- c(0, 1, 2, 3, 4)
+  r <- dhyper(x, 6, 10, 7); r
+  sum(r)
+  
+  # 또는 
+  
+  dhyper(4,      # number of red balls drawn without replacement
+         6,      # number of red balls  (10개에서 6개 불량)
+         4,      # number of blue balls (10개에서 4개 정상)
+         7)      # number of balls drawn
+```
+
+
+
+
+### 기하분포
+
+  * 시험 합격률이 0.25라고 한다. <br>
+  적어도 3번째 이내에 시험에서 합격할 확률
+```{r}
+    prob <- 0.25
+    dgeom(0, prob) +   # 첫번째 합격할 확률
+    dgeom(1, prob) +   # 두번째 합격할 확률
+    dgeom(2, prob)     # 세번째 합격할 확률
+
+    # 또는 
+
+    prob <- 0.25
+    x <- 3
+    pgeom(x - 1,prob)
+```
+
+
+### 음이항분포
+
+  * 홈런을 칠 확률은 0.25 7번째 타석에서 3번째 안타를 칠 확률
+
+```{r}
+
+  dnbinom(4,      # 실패횟수 : 7 - 3
+          3,      # 성공횟수
+          0.25)   # probability of success in each trial
+```
+
+  * 음이항분포의 k=1일 때, 기하분포와 같아지는지를 확인하라.
+
+```{r}
+  prob <- 0.4
+  dgeom(0, prob)
+  dnbinom(0, 1, prob)
+```
+
+
+### 포아송분포
+
+  * 책에 오타가 평균 5페이지에서 10개씩 발생 <br>
+  오타가 3개 나올 확률 
+```{r}
+dpois(3, 10/5)
+```
+  
+  응급실 환자가 하루 4명 하루에 2명 이하의 환자가 응급실로 올 확률 
+```{r}
+ppois(2, 4, lower.tail=TRUE )
+```
+
+
+
+### 정규분포 
+
+  성인 남자 평균키 173 표준편차 5 인 정규분포 <br>
+  185 이상인 사람의 비율을 구하기 위해 표준화 185의 z 값 
+
+```{r}
+  # TRUE : p[X<=x] FALSE : p[X > x]
+  pnorm(185, mean=173, sd=5, lower.tail = FALSE) 
+    # 또는 
+  zscore <- (185-173)/5
+  zscore
+  pnorm(zscore, mean=0, sd=1, lower.tail = FALSE)
+
+```
+
+
+### 지수분포
+
+  선풍기 평균수명이 5년일때 이부품이 고잔아지 않고 6년이상 수명이 지속될 확률
+```{r}
+  ramda <- 1/5
+  1-pexp(6, rate=ramda)
+
+```
+
+
+
+
+### t분포 
+
+  자유가 7일때 면적의 90% 가 두개의 t 값사이에 존재 양쪽의 t 값
+```{r}
+    qt(.95,                   # 확률 : 1 - (0.1/2)
+       df=7,
+       lower.tail = TRUE)     # 오른쪽 t값
+
+    qt(.95,                   # 확률 : 1 - (0.1/2)
+       df=7,
+       lower.tail = FALSE)    # 왼쪽 t값
+
+```
+
+
+### 카이제곱 분포
+  
+  * 자유도가 7이고 α=0.1일 때, 양쪽 두 개의 χ2값
+```{r}
+  qchisq(.95,                 # 확률 : 1 - 0.05
+       df=7,                # 자유도
+       lower.tail=TRUE)     # defalut. 오른쪽 카이제곱값 리턴
+
+  qchisq(.95,                 # 확률
+       df=7,                # 자유도
+       lower.tail = FALSE)  # 왼쪽 카이제곱값 리턴
+```
+
+
+### F 분포
+
+  * 집단 A의 표본분산이 20이고 n=9<br>
+  집단 B의 표본분산이 30이고 n=6<br>
+  α=0.1에 해당하는 (오른쪽) F값<br>
+```{r}
+  qf(.9,                # 확률 : 1 - 유의수준
+     df1=5,             # 분산이 더 큰 집단의 자유도
+     df2=8,             # 분산이 더 작은 집단의 자유도
+     lower.tail=TRUE)   # defalut. 오른쪽 F값 리턴
+```
+
+
+# 신뢰구간
+
+  
+  * 제품 평균수명이 표본 100개를 뽑아본 결과 평균이 800일, 모표준편차(σ)는 40일<br>
+  90%, 95%, 99% 신뢰구간 (정규분포)
+```{r}
+
+  m     <- 800  # sample mean
+  sigma <- 40   # population standard deviation
+  n     <- 100  # sample size
+  #90%
+  error <- qnorm(0.95)*sigma/sqrt(n); error 
+  #95%
+  error <- qnorm(0.975)*sigma/sqrt(n); error
+  #99%
+  error <- qnorm(0.995)*sigma/sqrt(n); error
+  
+  left <- m - error; left
+  right <- m + error; right
+```
+
+
+  * 제품의 모평균을 추리<br>
+  표본 9개를 추출 20, 20, 25, 21, 21, 23, 19, 18, 22<br>
+  제품의 평균에 대한 95% 신뢰구간 (t분포)<br>
+```{r}  
+  x <- c(20, 20, 25, 21, 21, 23, 19, 18, 22)
+  n <- length(x)
+  m <- mean(x)
+  s <- sd(x)
+  
+  # 0.975 t 분포값 df=n-1 자유도
+  error <- qt(0.975, df=n-1)*s/sqrt(n)
+    
+  left <- m - error; left
+  right <- m + error; right
+```
+  
+  
+  * 두 모평균의 신뢰구간<br>
+  두회사 제품의 평균수명 차이<br>
+  각 회사에서 16개, 15개의 표본을 뽑아 실험<br>
+  표본평균 각각 140일, 120일, 표본분산 10, 15<br>
+  평균수명 차이에 대한 95% 신뢰구간<br>
+```{r}
+  n.a <- 16
+  n.b <- 15
+
+  mean.a <- 140
+  mean.b <- 120
+
+  sample.var.a <- 10
+  sample.var.b <- 15
+  
+  
+  error <- abs(qt(0.025, df=(n.a + n.b)-2)); 
+  error
+  
+  pooled_variance <- sqrt(((n.a - 1)*sample.var.a + (n.b - 1)*sample.var.b)/(n.a + n.b-2));
+  pooled_variance
+
+  left <- mean.a - mean.b - error*pooled_variance*sqrt(1/n.a + 1/n.b); left
+  right <- mean.a - mean.b + error*pooled_variance*sqrt(1/n.a + 1/n.b); right
+
+```
+
+
+  * 실험1과 실험2의<br>
+    분산이 얼마나 차이 나는지를 비교<br>
+    각각 표본 5개와 4개를 뽑아 분산을 분산이 각각 14와 12<br>
+
+    이때 두 모분산의 비율 90% 신뢰구간
+```{r}
+  n.a <- 5
+  n.b <- 4
+
+  sample.variance.a <- 14
+  sample.variance.b <- 12
+
+  confidence.level <- 0.9    # 신뢰수준
+  significance.level <- (1 - confidence.level)/2; significance.level  # 유의수준
+
+  left.F.value <-
+  qf(significance.level,   # 확률
+       df1=n.a - 1,          # 분산이 더 큰 집단 의 자유도
+       df2=n.b - 1,          # 분산이 더 작은 집단 의 자유도
+       lower.tail=FALSE)     # 왼쪽 F값 리턴
+
+  left.F.value
+
+  right.F.value <-
+    qf(significance.level,   # 확률
+       df1=n.b - 1,          # 분산이 더 큰 집단 의 자유도
+       df2=n.a - 1,          # 분산이 더 작은 집단 의 자유도
+       lower.tail=FALSE)     # 오른쪽 F값 리턴
+
+  right.F.value
+
+  sample.variance.a/sample.variance.b * 1/left.F.value
+  sample.variance.a/sample.variance.b * right.F.value
+
+```
+
+
+# 가설검정
+
+## 가설검정
+
+### 모평균의 가설검정
+
+  
+  * 제품 평균 수명은 300일이 맞는지 검정<br>
+  제품 25개를 표본 조사 후 평균수명은 310일 유의수준 5%에서 검정<br>
+  단 건전지의 모표준편차는 30으로 알려져 있다.<br>
+
+    가설 수립 -> 양측 검정, 유의수준 0.05
+
+  풀이 <br>
+    1) 가설수립, 유의수준 0.05<br>
+        귀무가설 : 300 이다.<br>
+        대립가설 : 300 이 아니다.<br>
+        --> 수립된 가설의 모양에 따라 "양측검정"
+
+    2) 수립된 가설이 모평균에 관한 것이므로 z 통계량을 이용
+
+    3) 기각역 설정
+```{r}
+        round(qnorm(0.975), digits=2)
+```     
+   
+        --> 양측검정 이면서 유의수준 0.05
+
+    4. 검정통계량 계산 --> z 통계량 구하기 <br>
+        샘플을 통해 나온 값으로 계산
+```{r}
+        Xbar  <- 310
+        mu    <- 300
+        sigma <- 30
+        n     <- 25
+
+        zscore <- round((Xbar - mu) / (sigma/sqrt(n)), digits=2); zscore
+```
+        결론) 귀무가설이 맞다.
+
+    5. 매번 달라질수 있기 때문에
+        pvalue 로 변경해보면
+
+        zscore 로 구한 확률
+```{r}
+        prob <- pnorm(zscore, mean=0, sd=1); prob
+```
+        pvalue 확인
+```{r}      
+        pvalue <- (1 - prob) * 2; pvalue
+```
+
+
+  * 제품 50개의 표본의 평균 중량은 210 표준편차는 80 유의수준 5% 주장 타당성 <br>
+  가설) 200g 이다. 아니다.
+
+```{r}
+  xbar <- 210
+  mu <- 200
+  sigma <- 80
+  n <- 50
+
+  zscore <- round((xbar - mu) / (sigma/sqrt(n)), digits=2); zscore
+  prob <- pnorm(zscore, mean=0, sd=1); prob
+  pvalue <- (1 - prob) * 2;
+  pvalue
+```
+    pvalue 값이 0.3 이상으로 귀무가설을 채택한다. 
+    
+    
+    
+  * 평균수명은 5년 10마리 표본 평균수명 9명, 편차는 3<br>
+    가설) 5년 이다. 아니다.
+```{r}
+  # 모표준편차를 모름 
+  xbar <- 9
+  mu <- 5
+  sigma <- 3
+  n <- 10
+
+  # 검정통계량 계산
+  tvalue <- round((xbar - mu) / (sigma/sqrt(n)), digits=2); tvalue
+  # 0.1/2 양측 검정 
+  prob <- qt(0.05, df=n-1); prob
+      
+  pvalue <- 1 - pt(tvalue, df=n-1); pvalue
+```
+  pvalue 이 0.001 귀무가설을 기각
+
+
+
+* 추가 문제 <br>
+  문제. 2006년 조사에 의하면 한국인의 1인 1일 평균 알코올 섭취량은 8.1g이다. <br>
+  2008년 대통령 선거로 알코올 섭취량이 달라졌는지 조사하기 위해 <br>
+  10명을 무작위로 뽑아서 조사한 결과 다음과 같은 결과를 얻었다고 한다.<br>
+
+  15.50, 11.21, 12.67, 8.87, 12.15, 9.88, 2.06, 14.50, 0, 4.97<br>
+
+  이때 어느 주장이 더 타당한지 유의수준 5%에서 검정하도록 하라.<br>
+
+```{r}
+  p <- c(15.50, 11.21, 12.67, 8.87, 12.15, 9.88, 2.06, 14.50, 0, 4.97)
+  m <- mean(p)
+  mu <- 8.1
+  sigma <- sd(p)
+  n <- 10
+
+  # 검정통계량 계산
+  tvalue <- round((m - mu) / (sigma/sqrt(n)), digits=2); tvalue
+  # 0.05/2 양측 검정 
+  prob <- qt(0.05/2, df=n-1); prob
+  
+  # pvalue 값    
+  pvalue <- 1 - pt(tvalue, df=n-1); pvalue
+  
+  shapiro.test(p)
+
+```
+   0.65 < 2.262157 귀무가설을 채택
+
+
+
+## 두 모평균의 가설검정
+
+  * 두 지역의 월평균소득이 차이가 있다. 없다.<br>
+  100개:240만원  90개:230만원 유의수준 10%<br>
+  모표준편차60, 70
+
+```{r}
+  n.a<-100
+  n.b<-90
+
+  mean.a <- 240
+  mean.b <- 230
+
+  var.a <- 60
+  var.b <- 70
+
+  alpa <- 0.10/2 # 양측검정
+
+  s <- (mean.a-mean.b)-0/sqrt((var.a^2)/n.a+(var.b^2)/n.b)
+  s
+```
+
+
+## t-test 종류 
+
+### 독립 표본 t-test 두 집단비교
+
+  * 오토/수동 자동차의 mpg 차이가 있는지 비교 (귀무가설: 차이가 없다.)
+```{r}
+str(mtcars)
+head(mtcars)
+
+var.test(mtcars[mtcars$am==1,1 ], mtcars[mtcars$am==0, 1])
+
+t.test(mtcars[mtcars$am==0,1 ], mtcars[mtcars$am==1, 1],  paired = FALSE, var.equal = TRUE, conf.level = 0.95)
+ 
+``` 
+  -> f 검정 : pvalue 값이 0.06 임으로 등분산성을 만족 <br>
+  ->  pvalue  0.000285 두 집단의 차이가 유의미하다.
+
+
+### 대응 표본 t-test 
+  
+  * 중간 기말 시험에 차이가 있는지 확인 (귀무가설 : 차이가 없다.)
+```{r}
+mid = c(16, 20, 21, 22, 23, 22, 27, 25, 27, 28)
+final = c(19, 22, 24, 24, 25, 25, 26, 26, 28, 32)
+t.test(mid,final, paired=TRUE)
+```
+  -> 차이가 유의미하다. 
+
+
+### 단일 표본 t-test
+
+  * 기말고사 점수가 24점보다 유의하게 높은지 확인
+```{r}
+  mean(final)
+  t.test(final, alternative="greater", mu=24, conf.level = .95)
+```
+
+## 비모수 검정 
+
+  * 몸무게 비교 
+  H0 : 5년 전보다 몸무게가 증가하지 않았다. <br>
+  H1 : 5년 전보다 몸무게가 증가했다. 
+```{r}
+  x <- c(70.2, 54.9, 67.0, 60.5, 63.4, 61.9, 71.8, 66.1, 72.6, 73.0, 68.7, 70.3, 66.2, 55.6, 65.9)
+  mean(x)
+  var(x); sd(x)
+  stem(x)
+
+ shapiro.test(x)
+  
+  wilcox.test(x, # weight vector for wilcox-test
+     alternative = c("greater"), #  alternative = c("less", "greater", "two-sided")
+     mu = 63.0, # mu of population
+     conf.int = TRUE) # 95% pseudomedian confidence interval
+
+  t.test(x, # weight vector for t-test
+        alternative = c("greater"), #  alternative = c("less", "greater", "two-sided")
+        mu = 63.0, # mu of population
+        conf.level = 0.95) # confidence level or confidence coefficient (1-α)
+
+```
+  Shapiro p-value = 0.2413 데이터가 정규분포를 띄지 않아 비모수 검정을 해야 한다. <br>
+  Wilcoxon p-value = 0.0365 귀무가설을 기각하고 대립가설을 채택한다. 
+
+
+
+
+# 상관과 회귀 
+
+## 상관계수 계산
+
+```{r}
+  x <- c(1, 2, 3, 4, 5)
+  y <- c(8, 7, 6, 4, 5)
+  
+  xbar <- mean(x); xbar
+  ybar <- mean(y); ybar
+  
+  # 편차의 곱 
+  (x - xbar) * (y - ybar)
+  sum((x - xbar) * (y - ybar))
+  
+  # 편차 제곱의 곱
+  (x - xbar)^2 * (y - ybar)^2
+  sum((x - xbar)^2) * sum((y - ybar)^2)
+  sqrt(sum((x - xbar)^2) * sum((y - ybar)^2))
+
+  r <- sum((x - xbar) * (y - ybar))/sqrt(sum((x - xbar)^2) * sum((y - ybar)^2)); r
+  
+  cor.my <- function (x, y) {
+    xbar <- mean(x)
+    ybar <- mean(y)
+    r <- sum((x - xbar) * (y - ybar))/sqrt(sum((x - xbar)^2) * sum((y - ybar)^2))
+    return (r);
+  }
+  cor.my(x, y)
+  
+  cor(x, y)
+
+```
+
