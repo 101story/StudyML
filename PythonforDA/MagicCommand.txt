@@ -1,0 +1,68 @@
+매직 명령어 종류
+
+%명령어?
+    명령어 설명 보기
+
+%run
+    세션 내에서 파이썬 스크립트 파일 실행
+    -i 옵션: 스크립트 내의 변수는 스크립트 실행 뒤 IPython에서 접근 가능
+
+%paste
+    클립보드에 있는 텍스트를 단일 블록으로 실행
+
+%cpaste
+    코드를 붙여넣을 떄 특수한 프롬프트를 제공
+    입력을 마치려면 -- 입력
+
+ %xmode
+    표시되는 문맥 정보의 양을 조절
+    : Context, Verbose, Plain
+
+%magic
+    시스템 동작을 쉽게 제어할 수 있도록 설계된 특수명령
+
+%automagic
+    같은 이름의 Python 명령, 객체가 없으면 % 생략 가능
+
+%who, %who_ls, %whos
+    변수를 다루는 매직 명령어
+
+%matplotlib
+    이미지를 바로 보여줌
+
+%hist
+    명령 히스토리 보기
+
+%reset
+    지금까지 사용한 히스토리 날리기
+
+%xdel
+    객체에 대한 모든 참조 제거
+
+%logstart
+%logoff
+%logon
+%logstate
+%logstop
+    입출력 기록
+
+%alias
+    별칭 : 종료와 동시에 사라짐
+
+%bookmark
+    별칭 : 지울때까지 유지됨
+
+%debug
+    에러 발생 후 디버깅
+    ipdb> help
+
+%time
+%timeit
+    시간 측정
+
+%prun
+%run -p
+    프로파일링 프로그램 성능을 정량적으로 분석/평가하는 작업
+
+%lprun
+    함수의 각 줄마다 프로파일링하기

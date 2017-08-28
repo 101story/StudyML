@@ -1,0 +1,215 @@
+-- CMD 환경 설치 및 실행 ------------------------
+C:\Users\student>Conda --version
+    conda 4.3.25
+
+C:\Users\student>conda update conda
+    Fetching package metadata ...........
+    Solving package specifications: .
+
+    # All requested packages already installed.
+    # packages in environment at C:\Anaconda3:
+    #
+    conda                     4.3.25                   py36_0
+
+#>>> snowflakes 환경명, biopython 설치할 패키지 (의존성있는 패키지 동시에 설치됨)
+C:\Users\student>conda create -n snowflakes biopython
+    Fetching package metadata ...........
+    Solving package specifications: .
+
+    Package plan for installation in environment C:\Anaconda3\envs\snowflakes:
+
+    The following NEW packages will be INSTALLED:
+
+        biopython:      1.69-np113py36_0
+        mkl:            2017.0.3-0
+        numpy:          1.13.1-py36_0
+        pip:            9.0.1-py36_1
+        python:         3.6.2-0
+        setuptools:     27.2.0-py36_1
+        vs2015_runtime: 14.0.25420-0
+        wheel:          0.29.0-py36_0
+
+    Proceed ([y]/n)? y
+
+    mkl-2017.0.3-0 100% |###############################| Time: 0:17:16 127.80 kB/s
+    numpy-1.13.1-p 100% |###############################| Time: 0:00:37 100.80 kB/s
+    biopython-1.69 100% |###############################| Time: 0:00:15 151.33 kB/s
+    #
+    # To activate this environment, use:
+    # > activate snowflakes
+    #
+    # To deactivate an active environment, use:
+    # > deactivate
+    #
+    # * for power-users using bash, you must source
+    #
+
+
+C:\Users\student>activate snowflakes
+
+(snowflakes) C:\Users\student>python --version
+    Python 3.6.2 :: Continuum Analytics, Inc.
+
+(snowflakes) C:\Users\student>python
+    Python 3.6.2 |Continuum Analytics, Inc.| (default, Jul 20 2017, 12:30:02) [MSC v.1900 64
+    ] on win32
+    Type "help", "copyright", "credits" or "license" for more information.
+    >>> import numpy as np
+    >>> exit()
+
+(snowflakes) C:\Users\student>activate buuies
+
+    CondaEnvironmentNotFoundError: Could not find environment: buuies .
+    You can list all discoverable environments with `conda info --envs`.
+
+
+(snowflakes) C:\Users\student>deactivate snowflakes
+
+#>>> 화면지우기
+C:\Users\student> cls
+
+C:\Users\student>conda info --envs
+    # conda environments:
+    #
+    bunnies                  C:\Anaconda3\envs\bunnies
+    snowflakes               C:\Anaconda3\envs\snowflakes
+    tensorflow               C:\Anaconda3\envs\tensorflow
+    root                  *  C:\Anaconda3
+
+
+C:\Users\student>conda remove --name bunnies --all
+
+    Remove all packages in environment C:\Anaconda3\envs\bunnies:
+
+    Proceed ([y]/n)? y
+
+#>>> python 버전 선택하여 설치
+C:\Users\student>conda create --name bunnies python=3.6 astroid babel
+    Fetching package metadata ...........
+    Solving package specifications: .
+
+
+(bunnies) C:\Users\student>conda info -e
+    # conda environments:
+    #
+    bunnies               *  C:\Anaconda3\envs\bunnies
+    snowflakes               C:\Anaconda3\envs\snowflakes
+    tensorflow               C:\Anaconda3\envs\tensorflow
+    root                     C:\Anaconda3
+
+#>>> COPY
+C:\Users\student>conda create --name flowers --clone snowflakes
+    Source:      C:\Anaconda3\envs\snowflakes
+    Destination: C:\Anaconda3\envs\flowers
+    Packages: 8
+    Files: 6
+    #
+    # To activate this environment, use:
+    # > activate flowers
+    #
+    # To deactivate an active environment, use:
+    # > deactivate
+    #
+    # * for power-users using bash, you must source
+    #
+
+
+C:\Users\student>conda info --envs
+    # conda environments:
+    #
+    bunnies                  C:\Anaconda3\envs\bunnies
+    flowers                  C:\Anaconda3\envs\flowers
+    snowflakes               C:\Anaconda3\envs\snowflakes
+    tensorflow               C:\Anaconda3\envs\tensorflow
+    root                  *  C:\Anaconda3
+
+#>>> 삭제
+C:\Users\student>conda remove --name flowers --all
+
+    Package plan for package removal in environment C:\Anaconda3\envs\flowers:
+
+    The following packages will be REMOVED:
+
+        biopython:      1.69-np113py36_0
+        mkl:            2017.0.3-0
+        numpy:          1.13.1-py36_0
+        pip:            9.0.1-py36_1
+        python:         3.6.2-0
+        setuptools:     27.2.0-py36_1
+        vs2015_runtime: 14.0.25420-0
+        wheel:          0.29.0-py36_0
+
+    Proceed ([y]/n)? y
+
+#>>> 찾기
+C:\Users\student>conda search --full-name python
+    Fetching package metadata ...........
+    python                       2.6.8                         5  defaults
+                                 2.6.8                         6  defaults
+                                 2.6.9                         0  defaults
+C:\Users\student>conda search beautifulsoup4
+     Fetching package metadata ...........
+     beautifulsoup4               4.4.0                    py27_0  defaults
+                                  4.5.3                    py36_0  defaults
+                                  4.6.0                    py27_0  defaults
+                                  4.6.0                    py34_0  defaults
+                                  4.6.0                    py35_0  defaults
+                               *  4.6.0                    py36_0  defaults
+
+C:\Users\student>conda create -n snakes27 python=2
+    Fetching package metadata ...........
+    Solving package specifications: .
+
+    Package plan for installation in environment C:\Anaconda3\envs\snakes27:
+
+    The following NEW packages will be INSTALLED:
+
+       pip:            9.0.1-py27_1
+       python:         2.7.13-1
+       setuptools:     27.2.0-py27_1
+       vs2008_runtime: 9.00.30729.5054-0
+       wheel:          0.29.0-py27_0
+
+    Proceed ([y]/n)? y
+
+    vs2008_runtime 100% |###############################| Time: 0:00:02 376.53 kB/s
+    python-2.7.13- 100% |###############################| Time: 0:00:15   1.59 MB/s
+    setuptools-27. 100% |###############################| Time: 0:00:00   2.05 MB/s
+    wheel-0.29.0-p 100% |###############################| Time: 0:00:00   2.89 MB/s
+    pip-9.0.1-py27 100% |###############################| Time: 0:00:00   3.60 MB/s
+    #
+    # To activate this environment, use:
+    # > activate snakes27
+    #
+    # To deactivate an active environment, use:
+    # > deactivate
+    #
+    # * for power-users using bash, you must source
+    #
+
+C:\Users\student>activate snakes27
+
+#>>> 환경에 설치된 패키지 보기
+(snakes27) C:\Users\student>conda list
+    # packages in environment at C:\Anaconda3\envs\snakes27:
+    #
+    pip                       9.0.1                    py27_1
+    python                    2.7.13                        1
+    setuptools                27.2.0                   py27_1
+    vs2008_runtime            9.00.30729.5054               0
+    wheel                     0.29.0                   py27_0
+
+#>>> 해당 환경에만 패키지 설치 하기
+C:\Users\student>conda install -n bunnies beautifulsoup4
+    Fetching package metadata ...........
+    Solving package specifications: .
+
+    Package plan for installation in environment C:\Anaconda3\envs\bunnies:
+
+    The following NEW packages will be INSTALLED:
+
+        beautifulsoup4: 4.6.0-py36_0
+
+    Proceed ([y]/n)? y
+
+-------------------------------------
