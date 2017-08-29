@@ -63,6 +63,23 @@
 %prun
 %run -p
     프로파일링 프로그램 성능을 정량적으로 분석/평가하는 작업
+%prun -l 7 -s cumulative run_experiment()
+    ------
+    import numpy as np
+    from numpy.linalg import eigvals
+
+    def run_experiment(niter=100):
+        k = 100
+        results = []
+        for _ in range(niter):
+            mat = np.random.randn(k, k) # 난수 발생 시킴 100*100
+            max_eigenvalue = np.abs(eigvals(mat)).max() # 고유값을 구함
+            results.append(max_eigenvalue)
+        return results
+    some_results = run_experiment()
+    print('Largest on we saw: %s' % np.max(some_results))
+    ------
+
 
 %lprun
     함수의 각 줄마다 프로파일링하기
