@@ -1442,9 +1442,16 @@ lec 11-2 ConvNet Max pooling 과 Full Network
 ----
 lab 12-1 RNN – Basic
 ----
+    * RNN : output 값이 다음에 input 으로 들어옴
+    A cell 을 만들고 RNNCell
+    A cell 에서 나가는 output 의 크기 (hidden_size)를 정해줌
+    output 은 결과값 _states (직접사용할 일없음)
 
+    shape(1,1,4) : 4개의 벡터 정보를 갖는 하나의 인스턴스가 들어가서 하나씩 나옴
 
+    입력 shape(3,5,4) : 4개의 벡터 정보를 갖는 5글자, 3개 인스턴스
 
+    출력 shape(3,5,2) : 히든레이어가 2, 5개 글자, 3개의 인스턴스
 
 
 
