@@ -112,3 +112,41 @@ def classifyPerson(filename):
     classifierResult = classify0((inArr-minVals)/ranges,normMat,datingLabels,3)
     print("You will probably like this person: ",\
         resultList[classifierResult - 1])
+    
+        
+def img2vector(filename):
+    returnVect = np.zeros((1,1024))
+    fr = open(filename)
+    for i in range(32):
+        lineStr = fr.readline()
+        for j in range(32):
+            returnVect[0,32*i+j] = int(lineStr[j])
+    return returnVect
+
+def handwritingClassTest(foldername):
+    hwLabels = []
+    trainingFileList = listdir(foldername+'trainingDigits')           #load the training set
+    m = len(trainingFileList)
+    trainingMat = np.zeros((m,1024))
+    for i in range(m):
+        fileNameStr = trainingFileList[i]
+        fileStr = fileNameStr.split('.')[0]     #take off .txt
+        classNumStr = int(fileStr.split('_')[0])
+        hwLabels.append(classNumStr)
+        trainingMat[i,:] = img2vector(foldername+'trainingDigits/%s' % fileNameStr)
+    testFileList = listdir(foldername+'testDigits')        #iterate through the test set
+    errorCount = 0.0
+    mTest = len(testFileList)
+    for i in range(mTest):
+        fileNameStr = testFileList[i]
+        fileStr = fileNameStr.split('.')[0]     #take off .txt
+        classNumStr = int(fileStr.split('_')[0])
+        vectorUnderTest = img2vector(foldername+'testDigits/%s' % fileNameStr)
+        classifierResult = classify0(vectorUnderTest, trainingMat, hwLabels, 3)
+        if i%100 == 0 or classifierResult != classNumStr:
+            print("the classifier came back with: %d, the real answer is: %d" % (classifierResult, classNumStr))
+            if (classifierResult != classNumStr): 
+                print("----- error!! %d --------------" %i); 
+                errorCount += 1.0
+    print("the total number of errors is: %d" % errorCount)
+    print("the total correct rate is: %f" % (1-errorCount/float(mTest)))
