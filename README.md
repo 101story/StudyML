@@ -19,3 +19,4 @@ https://hunkim.github.io/ml/
 
 * Deep Learning from Scratch
 
+* Web Scraping with Python
