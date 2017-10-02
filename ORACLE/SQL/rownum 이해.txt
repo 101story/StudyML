@@ -1,0 +1,53 @@
+
+# 대표적인 pseudocolumn들
+
+  rownum  <- where 통과시 붙는 번호
+
+  rowid   <- 인덱스
+
+  level   <- 계층질의
+
+  currval <- sequence
+
+  nextval <- sequence
+
+# rownum의 의미
+
+  select rownum, e.*
+  from emp e;
+
+  select rownum, e.*
+  from emp e
+  where job = 'SALESMAN';
+
+# 비교
+
+  select /* 엉터리 */
+    rownum as no, e.*
+  from emp
+  where rownum <= 3
+  order by sal desc;
+
+  select /* 제대로 */
+    rownum as no, e.*
+  from (select *
+        from emp
+        order by sal desc) e;
+
+  select /* 제대로 */
+    rownum as no, e.*
+  from (select *
+        from emp
+        order by sal desc) e
+  where rownum <= 3;
+
+# 5번째에서 10번째
+
+  select *
+  from (select /* 제대로 */
+          rownum as no, e.*
+        from (select *
+              from emp
+              order by sal desc) e)
+  where no >= 5
+  and   no <= 10;
