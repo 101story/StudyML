@@ -4,19 +4,19 @@ Machine Learnign Study
 
 * Basic Math Theory
 
-* Jump to Python
+* Jump to Python<br>
     Python Basic
 
 * Deep Learning Zero To All <br>
     https://hunkim.github.io/ml/
 
-* Data Science School
+* Data Science School<br>
     https://datascienceschool.net/view-notebook/661128713b654edc928ecb455a826b1d/
 
-* Deep Learning from Scratch
+* Deep Learning from Scratch<br>
     An intensive deep learning primer that allows you to learn the core of your learning from the bottom.
 
-* Python for Data Analysis
+* Python for Data Analysis<br>
     Python for Data Analysis is concerned with the nuts and bolts of manipulating, processing, cleaning, and crunching data in Python. It is also a practical, modern introduction to scientific computing in Python, tailored for data-intensive applications.
 
 * Hands Machine Learning Scikit Learn TensorFlow
@@ -28,7 +28,7 @@ Machine Learnign Study
     - Learn techniques for training and scaling deep neural nets
     - Apply practical code examples without acquiring excessive machine learning theory or algorithm details
 
-* Machine Learning in Action
+* Machine Learning in Action<br>
     There are statistical data processing, data analysis, and data visualization in code and tactical tasks like classification, forecasting, recommendations, and higher-level features like summarization and simplification.
 
 * Machine Learning for the Web
