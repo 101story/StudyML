@@ -1,0 +1,415 @@
+DBMS 최종 정리
+
+Day1_SQL.sql
+
+  관계형DB(SQLDB)=자료구조(표)+입출력(SQL)
+  비관계형(Not Only SQL)=표 등의 여러 자료구조 이용
+  RDB는 3만오천건 처리 가능(초당) 그 이상은 비관계형을 주로 이용
+
+  //강사님 서버로 접속(동일 아이디)
+  sqlplus dream05/catcher@70.12.50.50:1521/XE
+
+  Database: .doc, 생성한다.
+  DBMS: 설치한다.
+
+  ** sql 자동실행
+  카페에서 파일 2개 다운받아서 끌어 cmd 창에 놓으면 명령어가 실행
+  테이블 생성 및 기본 테스트 환경 설정
+  SQL> @'C:\Users\student\Documents\jhfolder\creobjects.sql'
+
+Day2_SQL.sql
+
+  ** SQL 환경 설정 보기
+  >show all
+  linesize, pagesize 조정하기
+  >set linesize 200
+  >set pagesize 40
+
+  ** SQL 분류
+  DDL : 데이터 정의 CREATE, ALTER, DROP, RENAME, TRUCATE, COMMENT
+  DML : 데이터 제어 INSERT, UPDATE, DELETE, MERGE, SELECT
+  TCL : COMMIT, ROLLBACK, SAVEPOINT
+  DCL : GRANT, REVOKE
+
+  DDL, DCL 은 자동 커밋됨
+
+  Transction : DML 의 모음
+
+
+  ** select statement
+  //실행순서는 그떄 그떄 다르다.
+  //select 문장을 작성하거나 해석할 떄 권장 순서
+  select deptno, sum(sal) --4 (mandatory)
+  from emp                --1 (mandatory)
+  where sal >=1000        --2
+  group by deptno         --3
+  having sum(sal) >=2000  --5
+  order by deptno;        --6
+
+  ** 실행계획보기
+  >set autot on
+  >set timing on
+
+  //having 절의 경우 전체 데이터를 집단화 하고 연산을 수행하게 된다.
+
+
+  ** 날짜 포맷 맞추기
+  alter session set nls_date_format='YYYY/MM/DD';
+
+  ** distinct
+  중복제외(unique와 비슷)
+  SQL> select distinct comm from emp;
+
+
+Day3_SQLDetail.sql
+
+  ** VIEW
+  - Named(이름붙여진) select
+
+  ** 리터럴 연결하기
+  concatenation operator , literal
+  : sql 문에 등장하는 문자, 숫자 값
+  > select empno, ename||' is a(n) '||chr(10)||job
+  from emp;
+  //리터럴 문자는 한row 마다 붙음
+  //chr(10) 줄바꿈
+
+  > select 'drop table '||tname||' cascade constrants;' as command
+  from tab
+  where tname like 'T1%';
+
+  ** 대체 인용 (q) 연산
+  > select ename||'''s house is bigger than Tom''s' as ret
+  from emp;
+  > select ename||q'!'s house is bigger than Tom's'!' as ret
+  from emp;
+  > select ename||q'['s house is bigger than Tom's']' as ret
+  from emp;
+
+  ** lock 및 Deadlock
+  lock
+  update를 먼저 하고 commit 하지 않으면 다른 세션은 lock에 걸려 있다.
+  select 로 현재 잡고 있는 사용자를 찾을 수 있다.
+
+  Deadlock
+  오라클: 먼저 기다린 작업을 실패시킴 ORA-00060: deadlock detected while waiting for resource 리소스 기다리다 데드락 발생
+  //나때문에 누군가 기다리고 있다...락에 걸렸다. 보통 rollback 을 함으로 기존작업한 사람들에게 피해주지 않고 다시 작업한다.
+
+
+170410_SQLFunction.sql
+
+  ** 단일행 함수 종류
+  • 문자
+  • 숫자
+  • 날짜
+  • 변환
+  • 일반
+        - NVL
+        - NVL2
+        - NULLIF
+        - COALESCE
+        - CASE (표현식)
+        - DECODE (함수)
+
+  ------------------------
+  문자 함수
+  ------------------------
+
+  ** 문자 조작 함수
+  CONCAT('Hello', 'World')    HelloWorld
+  TRIM('H' FROM 'HelloWorld') elloWorld
+  SUBSTR('HelloWorld',1,5)    Hello
+  LENGTH('HelloWorld')        10
+  INSTR('HelloWorld', 'W')    6
+  LPAD(salary, 10,'*')         *****24000
+  RPAD(salary, 10, '*')       24000*****
+  REPLACE('JACK and JUE','J','BL')  BLACK and BLUE
+
+  • LPAD: 길이가 n이 되도록 왼쪽부터 문자식으로 채운 표현식을 반환합니다.
+  • RPAD: 길이가 n이 되도록 오른쪽부터 문자식으로 채운 표현식을 반환합니다.
+  * instr(문자, 찾을문자, 검색시작위치, 빈도수)
+  # 날짜 함수
+
+  • MONTHS_BETWEEN(date1, date2): date1과 date2 사이의 월수를 찾습니다.
+  결과는 양수나 음수가 될 수 있습니다. date1이 date2보다 늦은 날짜인 경우 결과는
+  양수이고 date1이 date2보다 앞선 날짜인 경우 결과는 음수입니다. 결과에서 정수가
+  아닌 부분은 월의 일부분을 나타냅니다.
+  • ADD_MONTHS(date, n): date에 월수 n을 추가합니다. n 값은 정수여야 하며 음수가
+  될 수도 있습니다.
+  • NEXT_DAY(date, 'char'): date 다음에 오는 지정된 요일('char')의 날짜를
+  찾습니다. char 값은 요일을 나타내는 숫자나 문자열이 될 수 있습니다.
+  • LAST_DAY(date): date에 해당하는 날짜가 있는 월의 말일 날짜를 찾습니다.
+  • ROUND(date[,'fmt']): date를 형식 모델 fmt에서 지정한 단위로 반올림하여
+  반환합니다. 형식 모델 fmt가 생략된 경우 date는 가장 가까운 일로 반올림됩니다.
+  • TRUNC(date[, 'fmt']): date를 형식 모델 fmt에서 지정한 단위로 truncate하여
+  날짜의 시간 부분과 함께 반환합니다. 형식 모델 fmt가 생략된 경우 date는 가장 가까운
+  일로 truncate됩니다.
+
+  # to_char() date -> char
+
+  > SELECT to_char(hiredate, 'YYYY YYYY')
+  FROM emp;
+
+  ## 복수행 함수
+  > select case when sal < 2000 then '1 : < 2000'
+              when sal < 4000 then '2 : < 4000'
+              else                 '3 : >= 4000'
+         end as gubun,
+         count(*),
+         sum(sal),
+         avg(sal)
+  from emp
+  group by case when sal < 2000 then '1 : < 2000'
+                when sal < 4000 then '2 : < 4000'
+                else                 '3 : >= 4000'
+           end
+  order by gubun;
+  //where, group by 에 컬럼 alias 사용 불가
+
+  // a는 그대로 x 값은 전부 찾아서 지움
+  select translate('xUaxUaaxU','ax', 'a')
+  from dual;
+      TRANS
+      -----
+      UaUaaU
+
+  // 뒤에 ''을 넣으면 결과는 모두 null 이 나옴
+  select translate('xUaxUaaxU','U', '')
+  from dual;
+      T
+      -
+
+170411_SQLJoin.sqml
+
+  INSTR('대상문자열', '찾을 문자', '방향 (1면 왼쪽 -> 오른쪽, -1이면 오른쪽에서 왼쪽)', '검색된 결과의 순번')
+
+  역방향에서 콤마가 2번째인 자릿수를 구하라
+  SELECT instr( '127.0.10.21','.',-1,2)
+  FROM dual
+  ;
+  ==> 6
+
+  ## Decode 함수와 case 표현식
+
+  > select /* decode 함수 */
+  deptno, sal, decode(deptno, 10, sal*1.1, 20, sal*1.2, sal) as whatif
+  from emp;
+
+  > select /* simple case 표현식 */
+         deptno,
+         sal,
+         case deptno when 10 then sal*1.1
+                     when 20 then sal*1.2
+                     else         sal
+         end as whatif
+  from emp;
+      (심플에서는 부등호 비교를 쓸수 없다)
+
+  > select /* searched case 표현식 */
+         deptno,
+         sal,
+         case when deptno = 10 then sal*1.1
+              when deptno = 20 then sal*1.2
+              else                  sal
+         end as whatif
+  from emp;
+
+170412_DMLDDL.sql
+
+  데이터 베이스 객체
+  • 테이블: 데이터를 저장합니다.
+  • 뷰: 하나 이상의 테이블에 있는 데이터의 부분 집합입니다.
+  • 시퀀스: 숫자 값을 생성합니다.
+  • 인덱스: 일부 질의 성능을 향상시킵니다.
+  • 동의어: 객체에 다른 이름을 부여합니다.
+
+
+  schema = user : 매핑되지만 다른것
+  create table t1 ....
+  create view t1 .... (불가)
+  create index t1 .... (가능)
+
+  하나의 name space 안에 두개의 동일한 객체를 가질수 없다.
+  http://docs.oracle.com/cd/B19306_01/server.102/b14200/sql_elements008.htm#i27561
+
+
+  Within a namespace, no two objects can have the same name.
+  # The following schema objects share one namespace:
+
+   - Tables
+   - Views
+   - Sequences
+   - Private synonyms
+   - Stand-alone procedures
+   - Stand-alone stored functions
+   - Packages
+   - Materialized views
+   - User-defined types
+
+  # Each of the following schema objects has its own namespace:
+
+   - Indexes
+   - Constraints
+   - Clusters
+   - Database triggers
+   - Private database links
+   - Dimensions
+
+
+  출처: http://kwangsics.tistory.com/entry/펌-네임스페이스에서-이름생성-방법Within-a-namespace-no-two-objects-can-have-the-same-name
+
+
+  >> column-level constraint
+
+  create table d1
+  (dno   number(2)    constraint d1_dno_pk   primary key,
+  dname varchar2(30)  constraint d1_dname_nn not null,
+  loc   varchar2(30));
+
+  create table e1
+  (empno  number(4)     constraint e1_empno_pk  primary key,
+   ename  varchar2(30)  constraint e1_ename_nn  not null,
+   sal    number(10, 2) constraint e1_sal_ck    check(sal >= 1000),
+   hp     varchar2(11)  constraint e1_hp_nn     not null
+                        constraint e1_hp_uk     unique,
+   deptno number(2)     constraint e1_deptno_fk references d1(dno));
+
+   * foreign key : pk, uk 제약이 걸려있는 것만 가능, 인덱스가 있는 컬럼만 가능, index 와 비교해서 허락 또는 거부 판단한다. 참조 무결성
+   값을 넣지 않아도 된다. null 허용
+     Master|Parent(pk) - Slave|Child(fk)
+     • ON DELETE CASCADE: 상위 테이블의 행이 삭제될 때 하위 테이블의 종속 행을 삭제합니다. (부모가 지워지면 나도 지워지겠다.)
+     • ON DELETE SET NULL: 종속 Foreign key 값을 null로 변환합니다
+
+   >> table-level constraint
+
+   drop table e1 purge;
+   drop table d1 purge;
+
+   create table d1
+   (dno   number(2),
+    dname varchar2(30),
+    loc   varchar2(30),
+      constraint d1_dno_pk   primary key(dno),
+      constraint de_dname_nn check(dname is not null)
+   );
+
+   create table e1
+   (empno  number(4),
+    ename  varchar2(30),
+    sal    number(10, 2),
+    hp     varchar2(11),
+    deptno number(2),
+      constraint e1_empno_pk  primary key(empno),
+      constraint e1_ename_nn  check(ename is not null),
+      constraint e1_sal_ck    check(sal >= 1000),
+      constraint e1_hp_nn     check(hp is not null),
+      constraint e1_hp_uk     unique(hp),
+      constraint e1_deptno_fk foreign key(deptno) references d1(dno) ON DELETE SET NULL
+   );
+
+  # 대표적인 pseudocolumn들
+   rownum  <- where 통과시 붙는 번호
+   rowid   <- 인덱스
+   level   <- 계층질의
+   currval <- sequence
+   nextval <- sequence
+
+  # rownum의 의미
+   > rownum return 이 될떄 붙는 번호
+   주로 서브쿼리에서 의미있게 사용됨
+   top n
+   우선 가장 위에 3개만
+
+   > 비교
+     select /* 엉터리 */
+       rownum as no, e.*
+     from emp
+     where rownum <= 3
+     order by sal desc;
+
+     select /* 제대로 */
+       rownum as no, e.*
+     from (select *
+           from emp
+           order by sal desc) e;
+
+  ------------------------
+  데이터 유형
+  ------------------------
+    VARCHAR2(size) 가변 길이 문자 데이터
+    CHAR(size) 고정 길이 문자 데이터
+    NUMBER(p,s) 가변 길이 숫자 데이터
+    DATE 날짜 및 시간 값
+    LONG 가변 길이 문자 데이터(최대 2GB)
+    CLOB 문자 데이터(최대 4GB)
+    RAW and LONG RAW 원시 이진 데이터
+    BLOB 바이너리 데이터(최대 4GB)
+    BFILE 외부 파일에 저장된 바이너리 데이터(최대 4GB)
+    ROWID 테이블에 있는 행의 고유한 주소를 나타내는 base-64 숫자 체계
+
+  ------------------------
+   Subquery를 사용하여 테이블 생성
+  ------------------------
+    CREATE TABLE table
+            [(column, column...)]
+    AS subquery;
+
+    CREATE TABLE dept80
+    AS
+      SELECT employee_id, last_name,
+          salary*12 ANNSAL,
+          hire_date
+      FROM employees
+      WHERE department_id = 80;
+
+  ------------------------
+    ALTER DROP TABLE 문
+  ------------------------
+    ALTER TABLE 구문을 사용하여 다음을 수행할 수 있습니다.
+    • 테이블을 읽기 전용 모드로 설정하여 테이블을 유지 관리하는 동안 DDL 문 또는 DML 문에 의한 변경을 방지합니다.
+    • 테이블을 다시 읽기/쓰기 모드로 설정합니다.
+    ALTER TABLE employees READ ONLY;
+    -- perform table maintenance and then
+    -- return table back to read/write mode
+    ALTER TABLE employees READ WRITE;
+
+    DROP TABLE table [PURGE]
+
+
+  ------------------------
+    INSERT INTO
+  ------------------------
+    INSERT INTO table [(column [, column...])]
+    VALUES (value [, value...]);
+
+    // INSERT 문을 subquery로 작성합니다.
+    INSERT INTO sales_reps(id, name, salary, commission_pct)
+        SELECT employee_id, last_name, salary, commission_pct
+        FROM employees
+        WHERE job_id LIKE '%REP%';
+  ------------------------
+    UPDATE
+  ------------------------
+    UPDATE table
+    SET column = value [, column = value, ...]
+    [WHERE condition];
+
+  ------------------------
+    DELETE
+  ------------------------
+    DELETE [FROM] table
+    [WHERE condition];
+
+  ------------------------
+    TRUNCATE
+  ------------------------
+    TRUNCATE TABLE table_name;
+    (초기화)
+
+  ----------------------------------
+                    공간의 반납        rollback 가능여부
+  drop table t1;      몽땅반납               X
+  truncate table t1;  최초크기만남기고반납      X
+  delete from t1;     전혀 반납하지 않음       O
+  ----------------------------------
+  rollback, undo 세그먼트가 존재
