@@ -1,0 +1,396 @@
+한국어 기계 학습 강좌
+
+http://seslab.kaist.ac.kr/xe2/page_GBex27
+
+=====================
+2018.10.02
+=====================
+
+--------------------- 4.4. 경사법
+
+Tayor Expansion 
+	무한개의 합이 되는 여러개의 텀 중에 하나의 텀을 정의할수가 있다. 
+	무한대로 미분가능할때 e^x 같은 미분해도 e^x
+	tayor expansion 이 가능 
+
+Gradient Descent 정의
+	f(x) 
+	x : 파라메터 피처값을 말하는건 아님
+	x 점을 움직이게끔 만들어 준다. 
+	속력은 사용자가 정의하고 방향을 정의해줌 
+
+	tayor expansion 을 0 차 1차 까지만 정의해봄
+	빅O notation 무한대의 텀을 sum 한 것을 제약시켜서 압축해 놓음 
+		
+	x = x1+hu
+	u 방향 
+	h 속력
+
+	derivative 도함수 순간적으로 변화한 비율  
+	argmin 
+	증가가 최소화하는 방향으로 음수의 값으로 진행하겠다. 
+	a*b 의 내적 -> a*b cosA 
+	코사인 값은 1 최대 -1 최소 값 -1로 이동해야된다. 
+
+--------------------- 4.5. 경사법의 작용
+	Rosenbrock 함수 예 
+	
+--------------------- 4.6. 로지스틱 회귀분석 매개 변수 근사2
+
+	방향성을 찾기 위해서 unit vector 를 만들어야 되는데 
+
+	로지스틱 과 그레디언트 합치지 
+	arbitrarily chosen 아무값이나 
+
+	
+
+=====================
+2018.09.18
+=====================
+--------------------- 4.1. 결정 경계
+
+logistic regression classifier
+	Desision boundary : 건너가는 순간 값이 달라짐
+	Likelihood 가 직선, 곡선이 있는데 곡선이 더 확실하게 분류해줌 
+	likelihood 가정이 참이라면 그 값이 나올 기대하는 정도 
+
+	하나의 특성(feature)을 잡아서 그래프를 그려보면 0, 1 f로 분포 될 수 있다. 
+	이걸 log 씌워서 급격한 값으 변화를 누그러트릴수 있다. 
+	
+	distrit 하지만 linear 로 fitting 해보겠다. 
+	logistic function -> log 로 만들어서 확대하고 scale 
+
+
+--------------------- 4.2. 로지스틱 회귀분석 개론
+logistic function 
+	사회 데이터 (더디게 가다가 급격하게 성정후 정채) 
+	로지스틱 함수를 역함수로 만들어서 0, 1 의 y 축 값을 일련의 값으로 변화시킴 
+
+	로지스틱 역함수 의 x 값을 로지스틱 y 값으로 보내고 (input)
+	로지스틱 역함수 의 y 값을 로지스틱 x 값으로 보냄 (feature) 
+	
+	derivative optimization 할때 편함(미분 0을 찾을떄)
+	ax + b = log(p/p-1)
+	a : 얼마만큼 압축할지 
+	b : 얼마만큼 이동할지
+	
+	리니어리그래션 형태로 fitting 시킴 
+	x 가 주어진상황에서 y 가 될 확률 
+	
+	binomial, multinomial 
+	
+--------------------- 4.3. 로지스틱 회귀분석 매개 변수 근사1
+
+	MCLE Maximum cnditional Likelihood Estimation
+	x 세타 
+	x 조건이 있을때 y 가 나올 확률 세타 
+	n 은 인스턴스 개수 인스턴스 개수 만큼 곱해서 argmax 를 구하겠다. 
+	
+	수식을 전계하다보면 점점 더 approximate 한 값이 나옴 
+	open form 이 나옴 
+
+
+
+
+=====================
+2018.09.04
+=====================
+
+--------------------- 3.1. 최적 분류
+나이브베이즈 
+optimal classifincation
+	MLE 앞면이 나올확률 (앞면/앞면 + 뒷면)
+	MAT MLE 에 알파 베타를 추가해서 	
+
+	실선 
+	점선  
+
+	곡선의 확률과 직선의 확률의 차는 곡선의 확률이 훨씩 확실한 차이로 구분(분류)해 줄수 있다. 
+	decision boundary 중앙 두분류의 확률이 교차하는 (동일한 50:50) 지점
+
+	Bayes Risk 를 최소화 하는 Classify 
+	Bayes Risk( 해당 분류가 나올 확률이 적은 확률 분포구간)
+
+	y|x pdf (probability dencity function) 확률 밀도 함수 
+	
+	베이즈이론 class conditional density, class prior 
+	- prior = p(Y=y)
+	- Likelihood = class conditional densicy = P(X=x|Y=y)
+	- 문제점 x 여러 벨류들의 연관관계가 있을떄 combination,--> 나이브베이즈 (연관관계를 무시하겠다.) 
+
+--------------------- 3.2. 조건부 독립
+
+Naive Bayse Classifier
+	여러 conditional 이 있을떄 
+	sky, temp, humid... 
+	
+	k : 분류 (나가논다/안나간다)
+	p(X=x|Y=y) 를 구하려면 2개씩 조인한다고 치면 (2^d-1)k 승수로 늘어나기 떄문에 너무 많아짐 
+	p(Y=y) 는 k-1 로 단순함 
+
+	
+	conditional independence 를 가정하자 
+	모든 x 를 독립으로 가정하자 
+	p(x)p(y) x확률*y확률
+	2^d 자승이 되는것을 없앨수 있다. 
+	d = x 개수 
+
+	conditional independence 
+	P(x1|x2,y) = P(x1|y) 가 같으면 conditional independece 라고 생각하자 
+		P(천둥|비, 번개) = P(천둥|번개) 
+		번개가 치는 경우에 천둥이 나올확률 
+		비가 온다는 사실이 천둥이 칠가 안찰까에 영향을 주지 않는다. 
+		천둥과 비는 독립적이다. 
+	 
+	conditional vs marginal independence
+	y 값이 관측이 되면 (번개가 쳤다는걸 알수만 있다면) x2 와 x1 이 독립적이라고 생각 할수 있다. 
+			
+	marginally independent 
+	p(x) = p(x|y) y 와 상관없이 x 가 일어 난다.	x2 의 행동을 보고 x1 이 행동을 결정할때는 marginally independent 가 되지 않는다. 
+	
+	conditional independent 
+	x1, x2 (피처값) 를 관제하는 commander 가 있다면 
+	conditnally independent 하다. 
+	
+
+--------------------- 3.3. 나이브 베이즈 구분자
+
+물결 이콜(틸트)
+
+Naive Bayes Classifier 
+	너무 순진한 가정이다. 
+	d 개의 x 와 y 가 있다. 
+	likelihood of P(x|y)
+	
+	Optimal classifier 이다. 
+
+문제점 
+	현실에선 독립 적이지 않다. 
+	MLE보단 MAP 를 사용해야함 
+		관측되지 않응 부분에 대해선 넣을수가 없으니 MAP 로 사전정보라도 넣어 줘야 한다. 
+	
+--------------------- 3.4. 나이브 베이즈 구분자 매트랩에 적용하기
+
+=====================
+2018.08.21
+=====================
+
+--------------------- 2.4 엔트로피와 정보 획득
+엔트로피?
+	불확실성에 대해서 어떻게 측정할수 있을까
+	entropy of a random variable 
+		특정 분포를 갖음 
+	conditional entorpy
+		특정 피처에 대한 정보가 있는경우 엔트로피를 판별해보자 
+	
+
+Information Gain 
+	모든 어트리뷰트에대해서 가장 크게 분류 되는 기준을 찾을 떄 사용 
+	루트 - depth1 -depth2 를 정하는 기준 
+
+ID3 알고리즘 
+
+
+--------------------- 2.5 훈련 데이터가 주어졌을 때, 의사결정나무 만드는 법
+
+
+
+linear regression
+
+approximated function 
+	linear regression 
+
+hypothesis 를 만들어 보자 
+	공식의 형태로 hypothesis 로 만든다. 
+	리니어 형태를 띄는 공식 
+	세타를 잘 정의해보자 
+
+argmin : 뭔가를 minimize 하는 것을 찾아서 return 
+	실제 관측값과 예측값의 차가 가장 작은 것을 찾는다 
+
+
+세타 0: 기울기
+세타 1: 절편 
+
+x 의 지수를 높여서 linear 하지 않은 그래프를 그릴수있다. 
+
+
+
+
+
+=====================
+2018.07.24
+=====================
+
+--------------------- 2.1 규칙기반 기계학습
+* 머신러닝 이란 : 경험에 의해서 배울수 있는 프로그램 
+	더 많은 경함이 있으면 더 정확해진다. 
+
+* 완벽한 세상에서 rule based learning 
+	function approximation 함수 근사화 
+	hypotheses : 가설 을 설정 
+	경우를 나눠서 항상 같은 결론을 낸다. 
+	
+
+
+--------------------- 2.2 규칙기반 알고리즘 개론  
+
+첫번쨰 인스턴스는 그대로 받아 드린다. 
+새로운 인스턴스를 주면 그다음 규칙을 배움 
+이전 값과 새로운 값을 union 시킴 
+특정한 가정을 함수로 찾아나감
+
+* 바운더리 : 
+		general : 러프한 조건
+		두 바운더리 가운데 version boundary 
+		specific : 세부조건 
+
+* candidate elimination algorithm
+		점점 차이를 좁혀서 version boundary 를 찾아감 
+		무조건 안나감 <-> 무조건 나감 
+		데이터에서 lable 이 true 인경우 
+			긍정인경우 
+				general -> 점점 specipic 하게 
+			부정인경우 
+				specipic -> 점점 general 하게 
+
+
+--------------------- 2.3 의사결정나무 알고리즘 개론
+
+http://archive.ics.uci.edu : 밴치마크 데이터 셋 ml/datasets
+
+노이즈가 많거나 fucntion 을 틀정할수 없는 경우 
+
+
+
+
+
+=====================
+2018.07.10
+=====================
+
+--------------------- 1.2. 최우추정법
+• distribution 
+    이산적인 
+
+* binomial distribution 
+    이산적인 사건 앞/뒤
+
+* 베르누이 실험  
+    하나/둘/셋.. 돌려서 하는 실험 
+
+* MLE Maximum Likelihood Estimation 
+	확률 추론    
+	어떻게 하면 가정(확률)이 강해서 참이라고 이야기 할 수 있을까?
+	등장할 확률을 최대화 하는 세타를 찾자 (찾은 세타를 세타햇이라고 하자) 
+
+	log 를 취해서 최대 값을 찾아 가자 
+	세터를 최적화해서 세터의 최대화를 찾자 
+
+	최대값, 최솟값을 찾을때 미분해서 0 인값 (극값을 이용) 
+
+* Simple Error Bound 
+	실험을 여러번 더 하면은 세터가 아니라 세터햇 (추론) 했던 에러가 줄어들 것
+	추론한 세타햇과 실제 세타의 차이가 특정 에러보다 클 확률은 <= 2e^-2N& (N 값이 실험횟수) 
+	실험횟수가 커질수록
+
+* 다항식 커브피팅 
+	휘어져있는 이상적인 모델에 맞추기 위해서 M 을 설정함
+	M 값이 클수록 (다항식의 차수) 더 휘어짐 
+
+* 오류함수 
+	모델이 예측한 값 - 실제값
+	MES 같은...
+
+
+--------------------- 1.3 최대 사후 확률 
+• posterior 
+	데이터가 존재할 확률분에 \ 세타의 사전정보 * 세타가 주어줬을때 데이터가 관측될 값 = 데이터가 주어졌을때 세터일 확률을 만들 수 있다. 
+
+• likelihood (우도)
+	세타가 주어줬을때 데이터가 관측될 값 
+	실제 데이터를 통해 예측된 모수의 확률 
+
+•  Beta distribution
+	특정 범위내에서 0~1 로 누적 분포 함수(cumulative distribution function, cdf) 성격을 가지고 있어서 확률을 잘 설명해 줄 것이다. 
+
+• MAP Maximum a Posterior Estimation 
+	Posterior 을 최적화 시킴 
+	왠지 압정은 50:50 인거 같아 라는 사전 정보를 넣을 수 있다. 
+
+• MLP MAP
+	둘의 계산값은 다르다? 
+	N 값이 점점 많아 질수록 알파 베타의 값의 영향은 점점 줄어서 점점 같아 질 것. 
+	(관측값이 적으면 둘값이 다를수있다.)
+
+	알파 베타는 어떻게 정하지? -> 랜덤변수 알파베타에 따라서 모양이 달라진다. 
+
+
+
+--------------------- 1.4 확률과 분포 
+	MLP : 데이터를 중심으로 세타 파라메터를 찾는것 
+	MAP : 사전지식을 가미해서 확률을 추정하는 것 
+
+• 확률이 뭐냐 
+	함수에 이벤트를 넣은 확률 
+	모든 이벤트의 확률을 더하면 1 
+	mutually exclusive 독립적인 
+
+• 함수 = 이벤트의 매핑 
+• null 이벤트 발생할 확률이 0 인 이벤트 
+
+• 조건부 확률 conditional probability
+	범위 , 조건 
+	이런 경우에 확률이 몇이냐 
+	p(A|B) : B 가 참인 상태에서 A 가 될 확률 
+
+• cumulative density 펑션 정의 
+	그래프 모양 바꾸기 
+	함수의 공식을 정해놓고 모양을 조정하기 
+	공식을 바꾸기 
+
+• Normal Distribution
+	포뮬라가 있고 (함수) 
+	mean, variance 등으로 함수를 정의 
+	롱테일이 있음 끝부분이 아주 길게 감 
+
+* Beta Distribution 
+	 0~1 사이에 테일이 없이 정해짐 
+	범위가 정해져있는 디스트리뷰션을 정의하는것 
+	확률을 모델링할때는 주로 베타를 사용함 (0~1사이) 
+	베이즈정리에 사용함 
+
+• Binomial Distribution 
+	이진 
+	점이 뚝뚝 떨어져있는 형태 descript 한 형태를 정의함 
+	동전던지 등 
+
+• Multinomial Distribution 
+	2개 이상의 떨어져있는 확률 
+	주사위
+
+
+
+### 최우추정법 1.2
+데이터에서 값을 추정하기 전에 뭘로 추정할꺼야? 
+MLE :  
+MAP : 점추정 
+
+precontist
+    계속해서 그 현상이 반복된다는 가정하에 몇번 나타났는지 
+베이지안
+    사전, 추정치, 전문지식이 있으면 알수 있어 
+
+Binomial Distribution (Bernoulli experiment)
+이항분포 둘중에 하나 
+
+
+라이클리후드 
+이 분포를 따르면 뭐가 될꺼야 조건부 이 데이터가 어느정도될꺼야 
+키 170 이면 클까? 대한민국 평균 20대 남자 라면... 
+
+분포를 추정 
+많은 값을 넣어서 분포를 추정한다 Maximum Likelihood Estimation
+180 이상의 남성이 10명 모여있다면 유치원은 아닌거 같아 
+
+
