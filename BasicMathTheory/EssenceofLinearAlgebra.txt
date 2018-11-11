@@ -1,0 +1,462 @@
+
+3blue1brown
+https://www.youtube.com/playlist?list=PLZHQObOWTQDPD3MizzM2xVFitgF8hE_ab
+
+
+chapter1 
+------------
+[ x
+  y
+  z]
+
+벡터의 합 : v + w : w 의 꼬리를 v 의 머리로 옮김 
+
+벡터의 곱 : v * w : 벡터의 길이를 변경함 scala 줄이거나 반대로 만들거나 
+
+
+
+chapter2 
+------------
+
+basis : 스케일 하기 전의 기본이 되는 가장 작은 백터 
+
+linear combination : 두 벡터를 스케일링해서 결합하는 것 (더하는것) 
+
+span : 두 벡티를 사용해서 나타낼수 있는 2차원 공간 
+
+vector, point : 두 벡터가 같은 방향인 경우 선으로 표현 할수 있고 두 벡티가 다른 방향인경우 한 면을 이루는 모든 점으로 생각 할 수 있다. 
+
+3개축 : 2 벡터의 span 은 가로지를 한 면 
+	3 벡터
+		3 번째 벡터가 2 벡티의 span 에 놓이면 벡터를 추가해도 span 은 바뀌지 않는다.	(선형종속 - linear dependent)	
+		3 번째 벡터가 2 벡터의 span 에 놓여 있지 않으면 span 은 3차원 공간에 전부 표현 할 수 있음 (선형독립 - linear independent)	
+	
+선형종속이 되면 상관관계가 높다. (2차원 -> 1차원) 
+standard basis : 01, 10
+
+
+
+
+chapter3
+------------
+
+linear transformations = 공간을 이동시키는 것
+
+transformation == functions
+
+입력 -> f(x) -> 아웃풋 
+
+linear 조건 : 변환이후에도 휘지 않아야하고, 원점은 변환이후에도 원점이여야 한다. parallel and evenly spaced (평행, 동일한간격) 
+
+기저 벡터가 어떻게 변환되는지만 알면 모든 벡터변환을 나타낼 수 있다. 
+
+기저벡터 x, y 
+[ a b   [x
+  c d ]  y ]
+==> a, c 의 x 더하기 b d 의 y 배
+
+shear 변환 : i-hat 은 그래도 있고 j-hat 만 변경되는 경우 (옆으로 밀면 기울이면..)
+
+
+
+chapter4
+------------
+
+composition : rotation and shear 변환 
+
+[1 1  [0 -1  [x
+ 0 1]  1 0 ]  y]
+shear rotation 
+	==>
+	[1 -1 [x
+	 1  0] y]
+
+product 행열의 곱
+	읽을때 오른쪽에서 왼쪽으로 봐야함 
+	f(g(x))
+
+
+[a b  [e f  
+ c d]  g h]  
+	==>
+	[a b [e  
+	 c d] g]  
+	==>
+	e[a    g[b
+	  c] +   d]
+
+Asoociativity 결합법칙 
+	(ab)c = a(bc)
+	
+
+
+chapter5
+------------
+
+3 차원 90도 회전 
+i-hat : 0 0 -1
+j-hat : 0 1 0
+k-hat : 1 0 0 
+i hat 만 회전 함 
+[0 0 -1
+ 0 1 0
+ 1 0 0]
+
+
+
+chapter6
+------------
+
+determinant : 행렬식 
+	스케일링 벡터
+	shear 는 면적에 변화를 주진 않는다. 
+	면적이 변하는 값
+
+det[4 2
+    2 1]
+==> 4*1 - 2*2 = 0 공간이 뭉게짐 
+
+def() = 음수 
+orientation 방향 
+	공간의 방향 뒤집기 
+	공간의 방위가 반전됨
+
+
+
+
+chapter7
+------------
+
+inverse matrix : 역행렬
+
+linear system of equation : 선형방정식 
+	2x+5y+3 = -3
+	4x+0y+8z = 0
+	1x+3y+0z = 2
+
+	coefficient 
+	2 5 5
+	4 0 8
+	1 3 0
+
+	variable
+	x
+	y
+	z
+
+	constants
+	-3 
+	0
+	2
+
+
+inverse transformation 
+	역행렬
+
+identity transformation 
+	항등 변환
+	아무것도 변하지 않는 변환
+
+det(a) = 0
+	공간이 뭉게지면서 역행렬이 존재 하지 않는다. 
+
+rank 1 : 변환의 결과가 선 1차원인 경우 
+ 
+랭크 : 변환 결과의 차원 수 
+
+column space : 변환 결과, 행렬의 가능하 ㄴ결과의 집합 
+
+column : 행렬의 열들의 기저 벡터의 변환 후 위치 
+	이 변환 후 기저 벡터들의 확장 공간은 가능한 모든 결과 공간을 알려줌
+
+열공간 : 행렬의 열들의 확장 공간이다. 
+
+full rank : 열의 갯수와 랭크가 같을 떄 
+
+null space : 원점으로 이동되는 벡터들의 집합 (kernel) 
+
+
+
+chapter8 
+------------
+
+3 rows 2 columns
+[ 2 0 
+ -1 1
+ -2 1]
+
+column space 열공간 : 3차원 공간의 원점을 가로지르는 2차원 평면산의 모든 벡터 
+
+[3 1 4
+ 1 5 9]
+3 개의 열은 3개의 기저벡터를 가진 공간에서 시작했다는 뜻
+2 개의 행이 의미하는 것은 세 기저 벡터의 변환 후를 말함
+
+
+
+chapter9
+------------
+
+dot product :  
+[4      [2
+ 1] dot -1]
+==> (length of projected w)(length of v) 
+	투영된 w 벡터의 길이에 v 벡터 길이를 곱하는 것 
+	반대방향의 벡터들의 내적은 음수 값이 된다. 
+	perpendicular : 수직
+	수직의 경우엔 0 이 됨 
+	4*2 + 1*-1 
+
+duality (이중성)
+	
+단위벡터와 내적과, 벡터를 단위백터로 투영한 길이를 구하는 것과 같아지는지
+matrix-vector product <-> dot product 
+
+matrix-vector product
+[Ux Uy][x
+        y]
+==> Ux*x + Uy*y
+
+dot product 
+[Ux [x
+ Uy] y]
+==> Ux*x + Uy*y
+
+벡터에서의 이중 : 벡터가 가지는 선형변환 
+	1차원으로 변환시키는 선형 변환에서 이중이란, 공간상의 특정 벡터를 말함 
+	[4,3] -> [4
+              3]
+2차원 공간의 3 j-hat(y) 과 4 i-hat(x) 을 1차원에 투영 
+==> 
+transform * vector
+[1 -2][4
+       3]
+==> 4*1+3*-2 = -2 
+==> 4(1) [-> 방향] + 3(-2) [<- 방향]
+
+내적은 투영 projection 을 이해하는 도구 
+벡터가 같은 방향을 가리키는지를 알아내는 유용한 도구 
+
+
+
+chapter10
+------------
+
+cross product (외적) : Area of parallelogram (v X W)
+	평행사변형의 영역
+	평행사변형의 영역의 v 벡터가 왼쪽(w 기준)에 존재하는 경우 음수가 됨 
+	i-hat(x) X j-hat(y) = +1
+	x 축을 먼저 하고 y 축을 나중에 하면 양수가 됨 
+
+determinants (행렬식) 
+det([3 2 
+     1 -1])
+v -> [3 
+      1]
+w -> [2
+     -1]
+
+det : 변환에 의해서 면적(area)이 얼마나 변하는지 
+	area of this parallelogram 
+
+면적이 1인 정사각형에서 평행사변형 변환됨(unit square 정사각형)
+
+면적이 1인 정사각형에서 orientation (방향) 이 뒤집혔다는 것이라 음수 값이 됨 
+
+ 
+
+chapter11
+------------
+
+3 차원 벡터 v 와 w 의 외적 
+[v1 X [w1
+ v2    w2
+ v3]   w3]
+==>
+[i-hat v1 w1
+ j-hat v2 w2
+ k-hat v3 w3]
+첫번째 열에 hat 기호를 적음 
+==> i(v2w3 - v3w2) + j(v3w1-v1w3) + k(v1w2-v2w1)
+	i*상수 + j*상수 + k*상수 
+
+3 차원 벡터 v 와 w 의 외적 의 결과는 v w 평면에 직각이다. 
+
+dot product 
+[2 dot [x
+ 1]     y]
+==>
+transform 
+[2 1][x
+      y]
+같다.
+
+The plan
+	1. define a 3d-to-1d linear transfromation in terms of v and w
+	2. find its dual vector
+	3. show that this dual is vXw
+
+[p1 dot [x
+ p2      y
+ p3]     x]
+==> x(v2w3 - v3w2) + y(v3w1-v1w3) + z(v1w2-v2w1)
+==> 
+p1 = v2w3 - v3w2
+p2 = v3w1-v1w3
+p3 = v1w2-v2w1
+==> 
+P dot [x
+       y
+       z]
+==> 
+length of projection * lenght of P
+
+area of parallelogram * component of x,y,z perpendictular to v and w
+v w 벡터의 평행사변형에 수직인 길이만큼만 곱함
+
+dual vector 가 반드시 v 와 w 에 수직이며 길이는 두벡터가 이루는 평행사변형의 면적과 같아야 한다. 
+
+
+
+chapter12 
+------------
+
+Implicit assumption
+	- first coordinate -> 
+	- second coordinate ^
+	- unit of distance 
+
+coordinate system : 좌표계 
+
+좌표계가 다를때 어떻게 해야하나
+b1 [2
+    1
+b2 [-1
+    1]
+를 basis 로 같는 좌표계에서 
+[-1
+  2]
+는 basis 가 원점이고 x=[1,0], y=[0,1] 축 인곳에선 
+-1 [2  + 2 [-1
+    1]      1]
+==> 
+[-4
+  1]
+로 표현되야 한다. 
+==> 
+[2 -1 [-1
+ 1  1] 2]
+행렬과 벡터의 곱이다. 
+
+결과가 다른 기저를 이용하더라도 동일한 선형 결합 벡터가 된다. 
+
+역행렬 : 처음에 있던 곳으로 되돌리는것에 대응하는 새로운 변환 
+
+other basis vector * vector in other corrdinate = same vector in our coordinates
+
+A=
+[2 -1 
+ 1  1]
+ 
+A * [x
+     y] 
+==>
+[x0
+ y0]
+==>
+x0 y0 기저가 1,0 0,1 인 좌표계의 같은 벡터값
+
+[x0  * A^-1
+ y0] 
+==>
+[x
+ y]
+
+기저가 다른 벡터에서의 90도 회전 
+[2 -1 ^-1 [0 -1 [2 -1 [-1
+ 1  1]     1  0] 1  1]  2]
+[inverse change of basis matrix][transformation matrix in our language][change of basis matrix][vector in other basis]
+
+- same vector in our basis = [change of basis matrix][vector in other basis]
+- transformed vector in our basis = [transformation matrix in our language][change of basis matrix][vector in other basis]
+
+A^-1MA : 기저가 다른 A 좌표계에서의 M 의 선형 변환 적용 
+	위 예에서는 90 도 회전 [0 -1 / 1 0]
+	A 는 관점의 변환 (다른 기저) 
+	같은 선형 변환 이지만 다만 기저가 다른 뿐이다. 
+
+
+
+chapter13
+------------
+
+eigen value 고유값 
+
+eigenvector : 변환이 일어나도 자신의 span 을 유지하는 벡터 scale 은 달라져도 회전하지 않는다. 
+eigenvalue : 달라진 스케일 값 
+
+axis of rotation 
+
+eigenvector 를 기준으로 공간이 회전한다. 
+선형 변환을 확실하게 알기 위해서 특정 좌표계와 덜 관계 있는 고유벡터를 찾는게 좋다. 
+
+식1) Av=람다v
+A : transformation 
+v : eigenvector
+람다 : 상수 
+행렬-벡터 곱인 Av 가 고유벡터 v 를 임의 상수 람다로 스케일링한 결과와 같다. 
+
+scaling by 람다 <-> matrix multiplication by 
+기저 벡터에 일어나는 젼화를 나타냄
+기저 벡터에 람다배 함 
+대각선 람다배 나머지는 0 
+==> 람다*I 항등행렬(대각선이 1이고 나머지는0)
+
+식2) 
+Av-람다Iv=0
+(A-람다I)v=0
+det(A-람다I)=0
+==> 
+변화 A 에서 span 이 변하지 않는 고유벡터 v 이기 때문에 이 v 를 찾는 것 
+det()=0 이면 차원이 뭉게지는게 아니라 차원을 내려서 0 이 되게 만드는 v 값이 있는 것 영행렬이 되게 함 
+
+고유벡터가 없는 경우 
+90 도 회전 
+	모든 벡터가 자신의 span 을 벗어남 
+
+shear (기울이기)
+	x 축이 eigenvector 가 됨 
+	x 축위 모든 벡터들은 그대로 있음 고유값 1
+
+diagonal matrix : 대각선 행렬 (대각선에만 값이 있는 행렬) 
+	모든 기저벡터는 고유벡터 
+	대각선의 값들은 고유값 
+	기저 벡터들의 고유값의 100 제곱으로 스케일링 하는 것과 동일
+
+
+같은 변환을 나타내지만 다른 기저 벡터 좌표계를 쓰는 행렬을 얻음 
+--> 이걸 고유 벡터로 하는 이유는 새로운 행렬이 대각선에 고유값들을 가지는 대각선 행렬이 되게 하기 위함
+기저 벡터가 변환될때 스테일 됙만 하는 좌표계에서 작업 할 수 있다. 
+
+eigenbasis : 고유 기저 
+	고유벡터 이면서 기저 벡터 
+
+
+
+chapter14
+------------
+벡터란 
+	물리적 관점
+		direction, lenght
+		2차원 공간 어디에 있어도 같은 벡터 
+	컴퓨터 관점
+		ordered lists of number.
+		집값예측 [footae/indicating price] 
+	수학적 관점
+		벡터끼리의 연선으로 모든 벡터가 될 수 있다. 
+
+perpendicular : 수직
+
+scaling : 같은 방향으로 줄거나 늘때 
+
+
